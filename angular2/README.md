@@ -7,18 +7,39 @@ Material Design with Simple 30KB CSS File for fast rendering
 npm install --save angular2-simple-ui
 Include Sui-Module in your  app.module.ts
 
-  import { SuiModule } from './sui/sui.module'; 
+ import { SuiModule } from 'angular2-simple-ui/sui/sui.module';
 
- If you don't have any changes simply  import  style.less into your app.component.ts
+If you don't have any changes simply  import  style.less into your app.component.ts
  
- import './sui/public/css/style.less';
+ import 'angular2-simple-ui/public/css/style.less';
 
 If you want CSS file 
 
- import './sui/public/css/style.css';
-
+ import 'angular2-simple-ui/public/css/style.css';
 
 Thats all you are up and running
+
+### For Navigation Components ###
+ 
+ import { INavigationModel,
+         NavigationModel,
+         RouteLinkModel } from 'angular2-simple-ui/sui/sui.navigation/sui.navigation.model';
+
+
+### For Form Components ###
+import { FormBase,
+        TextboxField,
+        DropdownField,
+        FileField,
+        RadioField } from 'angular2-simple-ui/sui/sui.util/sui.util.formBase';
+
+### For Table Components ###
+import {
+  TableModel,
+  ColumnModel,
+  EnumFieldType,
+  EnumEditType
+} from 'angular2-simple-ui/sui/sui.table/sui.table.model';
 
 ## Change Themes ##
  

@@ -1,0 +1,8 @@
+<div class="sui-card sui-center" *ngIf="showSpineer" >
+        <i class="fa fa-spinner fa-spin fa-2x sui-green"> </i>
+ </div>
+ <div class="sui-progress-container" *ngIf="showProgress" >
+  <div  class="sui-progressbar" [style.background]="progressBackground" [style.color]="progressFontColor"  [style.width]="progressPercentage + '%'" >
+    <div class="sui-center sui-text-white" [style.color]="progressFontColor">{{progressPercentage}}%</div>
+  </div>
+</div>

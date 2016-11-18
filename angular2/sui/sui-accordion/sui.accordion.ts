@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { ButtonModel } from 'angular2-simple-ui/sui/sui.util/sui.util.button.model';
 
 @Component({
     selector: 'sui-accordion',
@@ -6,7 +7,10 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 })
 export class AccordionComponent  {
-    @Input() notesClass: string;
-    @Input() notesStyle: Object = {};
-
+    @Input() accordionClass: string;
+    @Input() accordionStyle: Object = {};
+    @Input() accordians:ButtonModel[] =[];
+    onAccordionButtonClick(btn:ButtonModel){
+        
+    }
 }

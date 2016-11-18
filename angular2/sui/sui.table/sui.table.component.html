@@ -1,6 +1,6 @@
 <div class="sui-margin-top">
     <sui-alert [message]="errorMessage" [type]="alertType" heading="Error !"> </sui-alert>
-
+    <sui-progress [showSpineer]="showLoader" > </sui-progress>
     <div class="sui-table-container" *ngIf="tableModel && showTable">
         <div class="sui-margin-bottom">
             <div class="sui-col s5">
@@ -38,7 +38,7 @@
         <table [ngClass]="this.tableModel.cssClass" [ngStyle]="this.tableModel.style" *ngIf="tableData && tableData.length">
             <thead>
                 <tr>
-                    <th *ngFor="let column of tableModel.columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" [ngClass]="this.tableModel.headerCssClass"
+                    <th *ngFor="let column of tableModel.columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{' sui-padding '+ this.tableModel.headerCssClass}}"
                         [ngStyle]="this.tableModel.headerStyle">
                         <a (click)="onSortClick(column)" class="sui-pointer">
                             <span> {{column.displayName}} </span>
@@ -77,6 +77,9 @@
                     <td>
                         <a class="sui-btn-info" (click)="onEditRow(row)"> <i class="{{tableModel.cssEditIcon}}"> </i> </a>
                         <a class="sui-btn-danger" (click)="onDeleteRow(row)"> <i class="{{tableModel.cssDeleteIcon}}"> </i> </a>
+                        <a class="{{'sui-btn '+ btn.cssClass}}" style="{{btn.style}}"  *ngFor="let btn of tableModel.rowActionButtons" (click)='onActionButtonClick(btn.id, row)' >
+                             <i class="{{btn.icon}}" *ngIf="btn.icon" > </i> <span *ngIf="!btn.icon || btn.showBothIconAndText"> {{btn.displayText}} </span>
+                        </a>
                     </td>
                 </tr>
             </tbody>

@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
     templateUrl: './sui.alert.component.html',
 
 })
-export class Alertomponent implements OnInit {
+export class AlertComponent implements OnInit {
     @Input() message: string;
     @Input() type: AlertType;
     @Input() heading: string;

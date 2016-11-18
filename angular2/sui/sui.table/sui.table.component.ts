@@ -19,6 +19,7 @@ export class TableComponent implements OnInit {
     @Output() updateRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() addRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() deleteRecord: EventEmitter<any> = new EventEmitter<any>();
+    @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
 
     filters: FilterModel = new FilterModel();
     hiddenFields: string[] = [];
@@ -38,12 +39,13 @@ export class TableComponent implements OnInit {
     deleteRow?: any;
     isEditRow: boolean = false;
     isAddRow: boolean = false;
+    showLoader: boolean = false;
     errorMessage: string = '';
     modalHeaderText: string = '';
     deleteIndex?: number;
     tableData: any[];
     rowToAdd: any;
-     alertType: AlertType = AlertType.error;
+    alertType: AlertType = AlertType.error;
     constructor(private suiHttpService: SuiHttpService) { }
 
 
@@ -79,9 +81,14 @@ export class TableComponent implements OnInit {
         if (this.tableModel.data && this.tableModel.data.length) {
             this.tableData = this.tableModel.data;
         } else if (this.tableModel.getUrl) {
+            this.showLoader = true;
             this.suiHttpService.get(this.tableModel.getUrl, false).subscribe(data => {
+                this.showLoader = false;
                 this.tableData = data;
-            }, error => this.errorMessage = <any>error);
+            }, error => {
+                this.showLoader = false;
+                this.errorMessage = <any>error;
+            });
         }
         return this.tableData;
     }
@@ -255,7 +262,8 @@ export class TableComponent implements OnInit {
         if (!this.hiddenFields.includes(column.fieldName)) {
             this.hiddenFields.push(column.fieldName);
         } else {
-            this.hiddenFields = this.hiddenFields.filter(y => y === column.fieldName);
+            let index=  this.hiddenFields.findIndex(y => y === column.fieldName);
+            this.hiddenFields.splice(index,1);
         }
     }
 
@@ -265,6 +273,9 @@ export class TableComponent implements OnInit {
             return true;
     }
 
+    onActionButtonClick(id:string, row:any) {
+        this.actionButtonClicked.emit({id, row});
+    }
     onSortClick(column: ColumnModel) {
         if (column.canSort) {
             this.sortKey = column.fieldName;

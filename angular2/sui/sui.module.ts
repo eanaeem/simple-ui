@@ -17,10 +17,11 @@ import { ConfirmModalComponent } from './sui.modal/sui.confirm.modal.component';
 import { FormComponent } from './sui.form/sui.form.component';
 import { AddPipe } from './sui.util/sui.util.add.pipe';
 import { InputComponent } from './sui.form/sui.input.component';
-import { Alertomponent } from './sui.alert/sui.alert.component';
+import { AlertComponent } from './sui.alert/sui.alert.component';
 import { PanelComponent } from './sui.panel/sui.panel.component';
 import { NotesComponent } from './sui.notes/sui.notes.component';
 import { QuotesComponent } from './sui.quotes/sui.quotes.component';
+import { ProgressComponent } from './sui-progress/sui.progress.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,7 @@ import { QuotesComponent } from './sui.quotes/sui.quotes.component';
         DeletePipe,
         AddPipe,
         ModalComponent,
-        Alertomponent,
+        AlertComponent,
         NavigationComponent,
         RatingComponent,
         TableComponent,
@@ -40,6 +41,7 @@ import { QuotesComponent } from './sui.quotes/sui.quotes.component';
         NotesComponent,
         QuotesComponent,
         PanelComponent,
+        ProgressComponent,
         FormComponent],
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
     exports: [
@@ -57,12 +59,13 @@ import { QuotesComponent } from './sui.quotes/sui.quotes.component';
         TableComponent,
         NotesComponent,
         NavigationComponent,
-        Alertomponent,
+        AlertComponent,
         RatingComponent,
         ConfirmModalComponent,
         InputComponent,
         QuotesComponent,
         PanelComponent,
+        ProgressComponent,
         FormComponent
     ]
 })

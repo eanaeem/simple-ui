@@ -1,0 +1,5 @@
+<div class="{{'sui-accordion sui-light-grey  ' + accordionClass}}" [ngStyle]="accordionStyle">
+    <button class="{{'sui-btn '+ btn.cssClass}}" style="{{btn.style}}" *ngFor="let btn of accordionButtons" (click)='onAccordionButtonClick(btn)'>
+        <i class="{{btn.icon}}" *ngIf="btn.icon"> </i> <span *ngIf="!btn.icon || btn.showBothIconAndText"> {{btn.displayText}} </span>
+    </button>
+</div>

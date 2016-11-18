@@ -1,4 +1,5 @@
 
+import {ButtonModel} from '../sui.util/sui.util.button.model';
 
 export enum EnumFieldType {
     text = 0,
@@ -92,6 +93,7 @@ export class TableModel {
     public canAdd: boolean = true;
     public canDelete: boolean = true;
 
+    public rowActionButtons:ButtonModel[] =[];
     public getUrl?: string;
     public addUrl?: string;
     public updateUrl?: string;
