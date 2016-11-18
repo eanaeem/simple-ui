@@ -21,52 +21,68 @@ import { AlertComponent } from './sui.alert/sui.alert.component';
 import { PanelComponent } from './sui.panel/sui.panel.component';
 import { NotesComponent } from './sui.notes/sui.notes.component';
 import { QuotesComponent } from './sui.quotes/sui.quotes.component';
-import { ProgressComponent } from './sui-progress/sui.progress.component';
+import { ProgressComponent } from './sui.progress/sui.progress.component';
+import { CardComponent } from './sui.card/sui.card.component';
+import { BadgeComponent } from './sui.badge/sui.badge.component';
+import { TagComponent } from './sui.tag/sui.tag.component';
+import { ListComponent } from './sui.list/sui.list.component';
+
 
 @NgModule({
     declarations: [
+        AddPipe,
+        DeletePipe,
         FilterPipe,
         OrderByPipe,
         PagingPipe,
         VisiblePipe,
-        DeletePipe,
-        AddPipe,
-        ModalComponent,
+
         AlertComponent,
-        NavigationComponent,
-        RatingComponent,
-        TableComponent,
-        ConfirmModalComponent,
+        BadgeComponent,
+        CardComponent,
+        FormComponent,
         InputComponent,
+        ListComponent,
+        ModalComponent,
+        NavigationComponent,
         NotesComponent,
-        QuotesComponent,
         PanelComponent,
         ProgressComponent,
-        FormComponent],
+        ConfirmModalComponent,
+        QuotesComponent,
+        RatingComponent,
+        TableComponent,
+        TagComponent,
+        ],
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
     exports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        PagingPipe,
-        VisiblePipe,
-        RouterModule,
+
+        AddPipe,
+        DeletePipe,
         FilterPipe,
         OrderByPipe,
-        DeletePipe,
-        AddPipe,
-        ModalComponent,
-        TableComponent,
-        NotesComponent,
-        NavigationComponent,
+        PagingPipe,
+        VisiblePipe,
+
         AlertComponent,
-        RatingComponent,
-        ConfirmModalComponent,
+        BadgeComponent,
+        CardComponent,
+        FormComponent,
         InputComponent,
-        QuotesComponent,
+        ListComponent,
+        ModalComponent,
+        NavigationComponent,
+        NotesComponent,
         PanelComponent,
         ProgressComponent,
-        FormComponent
+        ConfirmModalComponent,
+        QuotesComponent,
+        RatingComponent,
+        TableComponent,
+        TagComponent,
     ]
 })
 export class SuiModule { }

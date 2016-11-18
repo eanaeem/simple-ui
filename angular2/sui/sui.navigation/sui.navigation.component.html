@@ -1,4 +1,4 @@
-<ul [ngStyle]="nav.style" class="{{'sui-navbar sui-hide-mobile sui-hide-tablet sui-left-align ' + nav.cssClass}}">
+<ul  *ngIf="!showSideNav" [ngStyle]="nav.style" class="{{'sui-navbar sui-hide-mobile sui-hide-tablet sui-left-align ' + nav.cssClass}}">
     <li>
         <a href="/">
             <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
@@ -47,3 +47,27 @@
         </a>
     </li>
 </ul>
+
+<nav class="{{'sui-sidenav  sui-card-2 ' + nav.cssClass}}" *ngIf="showSide">
+    <a (click)="sui_close()" class="sui-closenav sui-large">Close &times;</a>
+    <a routerLink="{{item.routerLink}}" routerLinkActive="active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
+        <i *ngIf="item.icon" class="{{item.icon}}"> </i>
+        <span *ngIf="item.showBothIconText">  
+                <i *ngIf="item.icon" class="{{item.icon}}"> </i> {{item.displayName}} 
+            </span>
+        <span *ngIf="!item.icon"> {{item.displayName}}  </span>
+    </a>
+</nav>
+
+
+<header  *ngIf="showSideNav" class="{{'sui-navbar sui-left-align ' + nav.cssClass}}" [ngStyle]="nav.style">
+    <span class="sui-opennav sui-xlarge" (click)="sui_open()">&#9776;</span>
+        <a href="/">
+            <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
+            <span *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
+            <span *ngIf="nav.showBothBrandAndLogo">
+            <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
+            <span class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
+        </a>
+    </span>
+</header>

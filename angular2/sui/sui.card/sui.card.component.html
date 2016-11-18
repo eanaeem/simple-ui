@@ -1,0 +1,15 @@
+<div class="{{'sui-card-4 ' + cardClass}}" [ngStyle]="cardStyle">
+
+    <header class="sui-container">
+        <ng-content select="card-header"></ng-content>
+    </header>
+
+    <div class="sui-container">
+        <ng-content select="card-body"></ng-content>
+    </div>
+
+    <footer class="sui-container">
+        <ng-content select="card-footer"></ng-content>
+    </footer>
+
+</div>

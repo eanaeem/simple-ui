@@ -1,0 +1,6 @@
+<ul *ngIf="!customTemplate" class="{{'sui-ul '+ listClass}}" [ngStyle]="listStyle">
+    <li *ngFor="let item of listItems" [innerHTML]="item"> </li>
+</ul>
+<ul ngIf="customTemplate" class="{{'sui-ul '+ listClass}}" [ngStyle]="listStyle">
+    <ng-content></ng-content>
+</ul>
