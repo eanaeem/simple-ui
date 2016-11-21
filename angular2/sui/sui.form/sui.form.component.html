@@ -5,8 +5,8 @@
             <sui-input [field]="field"> </sui-input>
         </div>
         <div class="sui-container sui-right ">
-            <button (click)="onSuiFormSubmit()"  type="button" class="sui-btn-success"><i class="fa fa-check-circle-o"></i> Save</button>
-            <button (click)="onSuiFormCancel()" type="button" class="sui-btn-danger"><i class="fa fa-times"></i> Cancel</button>
+          <sui-button (onClick)="onSuiFormSubmit()" [model]="successButton"> </sui-button>
+          <sui-button (onClick)="onSuiFormCancel()" [model]="cancelButton"> </sui-button>
         </div>
     </form>
 </div>

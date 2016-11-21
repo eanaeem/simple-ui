@@ -20,6 +20,8 @@ export class TableComponent implements OnInit {
     @Output() addRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() deleteRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+    @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
+
 
     filters: FilterModel = new FilterModel();
     hiddenFields: string[] = [];
@@ -47,8 +49,8 @@ export class TableComponent implements OnInit {
     rowToAdd: any;
     alertType: AlertType = AlertType.error;
     constructor(private suiHttpService: SuiHttpService) { }
-
-
+    columns: ColumnModel[] = [];
+    hasUnboundColumn: boolean = false;
     ngOnInit(): void {
         this.getColumns().forEach(y => {
             if (y.hidden)
@@ -77,12 +79,15 @@ export class TableComponent implements OnInit {
         }
     }
 
-     getData() {
+    getData() {
         if (this.tableModel.data && this.tableModel.data.length) {
             this.tableData = this.tableModel.data;
         } else if (this.tableModel.getUrl) {
             this.showLoader = true;
             this.suiHttpService.get(this.tableModel.getUrl, false).subscribe(data => {
+                if (this.hasUnboundColumn) {
+                    this.bindUnboudData.emit(data);
+                }
                 this.showLoader = false;
                 this.tableData = data;
             }, error => {
@@ -108,10 +113,10 @@ export class TableComponent implements OnInit {
         this.setFormFields(row);
         if (row) {
             this.isEditRow = true;
-            this.modalHeaderText = 'Edit record';
+            this.modalHeaderText = this.tableModel.editRecordHeader;
         } else {
             this.isAddRow = true;
-            this.modalHeaderText = 'Add new record';
+            this.modalHeaderText = this.tableModel.addRecordHeader;
         }
         if (this.tableModel.editType === 2) {
             this.showDialog = !this.showDialog;
@@ -265,11 +270,12 @@ export class TableComponent implements OnInit {
     }
 
     onColumnChooserClick(column: ColumnModel) {
-        if (!this.hiddenFields.includes(column.fieldName)) {
+        let exit = !this.showColumnIcon(column);
+        if (exit) {
             this.hiddenFields.push(column.fieldName);
         } else {
-            let index=  this.hiddenFields.findIndex(y => y === column.fieldName);
-            this.hiddenFields.splice(index,1);
+            let index = this.hiddenFields.findIndex(y => y === column.fieldName);
+            this.hiddenFields.splice(index, 1);
         }
     }
 
@@ -279,8 +285,8 @@ export class TableComponent implements OnInit {
             return true;
     }
 
-    onActionButtonClick(id:string, row:any) {
-        this.actionButtonClicked.emit({id, row});
+    onActionButtonClick(id: string, row: any) {
+        this.actionButtonClicked.emit({ id, row });
     }
     onSortClick(column: ColumnModel) {
         if (column.canSort) {
@@ -303,7 +309,16 @@ export class TableComponent implements OnInit {
     }
 
     getColumns() {
-        return this.tableModel.columns;
+        if (this.columns && !this.columns.length) {
+            this.tableModel.columns.forEach(col => {
+                if (!col.showOnlyInEditForm)
+                    this.columns.push(col);
+                if (col.isUnBoundColumn) {
+                    this.hasUnboundColumn = true;
+                }
+            })
+        }
+        return this.columns;
     }
 
     trackByIndex(index: number, item: any) {
@@ -332,41 +347,41 @@ export class TableComponent implements OnInit {
         let order = 1;
         this.fields = [];
         this.tableModel.columns.forEach(y => {
-
-            let val = row ? row[y.fieldName] : '';
-            let fieldType = this.getType(y.fieldType);
-            if (fieldType === 'select') {
-                let selectList = this.getSelectList(y);
-                let options: any[] = [];
-                selectList.forEach(z => {
-                    options.push({ key: z.key, value: z.value });
-                });
-                this.fields.push(new DropdownField({
-                    key: y.fieldName,
-                    label: y.displayName,
-                    options: options,
-                    value: val,
-                    disabled: y.fieldName === '_id' || !y.canEdit || y.identityField,
-                    readonly: y.fieldName === '_id' || !y.canEdit || y.identityField,
-                    order: order
-                }));
-            } else {
-                this.fields.push(
-                    new TextboxField({
+            if (!y.isUnBoundColumn || (y.isUnBoundColumn && y.canEditUnBoundColum)) {
+                let val = row ? row[y.fieldName] : '';
+                let fieldType = this.getType(y.fieldType);
+                if (fieldType === 'select') {
+                    let selectList = this.getSelectList(y);
+                    let options: any[] = [];
+                    selectList.forEach(z => {
+                        options.push({ key: z.key, value: z.value });
+                    });
+                    this.fields.push(new DropdownField({
                         key: y.fieldName,
                         label: y.displayName,
-                        type: fieldType,
-                        required: y.required,
+                        options: options,
                         value: val,
                         disabled: y.fieldName === '_id' || !y.canEdit || y.identityField,
                         readonly: y.fieldName === '_id' || !y.canEdit || y.identityField,
-                        placeholder: y.displayName,
                         order: order
-                    }),
-                );
-                order = order + 1;
+                    }));
+                } else {
+                    this.fields.push(
+                        new TextboxField({
+                            key: y.fieldName,
+                            label: y.displayName,
+                            type: fieldType,
+                            required: y.required,
+                            value: val,
+                            disabled: y.fieldName === '_id' || !y.canEdit || y.identityField,
+                            readonly: y.fieldName === '_id' || !y.canEdit || y.identityField,
+                            placeholder: y.displayName,
+                            order: order
+                        }),
+                    );
+                    order = order + 1;
+                }
             }
-
         });
     }
 }

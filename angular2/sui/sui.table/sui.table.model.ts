@@ -1,5 +1,5 @@
 
-import {ButtonModel} from '../sui.util/sui.util.button.model';
+import { ButtonModel } from 'angular2-simple-ui/sui//sui.util/sui.util.button.model';
 
 export enum EnumFieldType {
     text = 0,
@@ -92,20 +92,34 @@ export class TableModel {
     public canEdit: boolean = true;
     public canAdd: boolean = true;
     public canDelete: boolean = true;
+    public editRecordHeader: string = 'Edit record';
+    public addRecordHeader: string = 'Add new record';
 
-    public rowActionButtons:ButtonModel[] =[];
+    public rowActionButtons: ButtonModel[] = [];
     public getUrl?: string;
     public addUrl?: string;
     public updateUrl?: string;
     public deleteUrl?: string;
 
-    public txtAddBtn: string = 'Add New';
-    public cssAddBtn: string = 'sui-btn';
-    public cssAddIcon: string = 'fa fa-plus-circle';
+    public editBtn: ButtonModel = new ButtonModel('edit');
+    public addBtn: ButtonModel = new ButtonModel('add');
+    public deleteBtn: ButtonModel = new ButtonModel('delete');
 
-    public cssEditIcon: string = 'fa fa-edit';
-    public cssDeleteIcon: string = 'fa fa-times';
-    constructor(public columns: ColumnModel[] = [], public data: any[] = []) { }
+    constructor(public columns: ColumnModel[] = [], public data: any[] = []) {
+        this.editBtn.displayText = 'Edit';
+        this.editBtn.icon = 'fa fa-edit';
+        this.editBtn.cssClass = 'sui-btn-info';
+
+        this.deleteBtn.displayText = 'Delete';
+        this.deleteBtn.icon = 'fa fa-times';
+        this.deleteBtn.cssClass = 'sui-btn-danger';
+
+        this.addBtn.displayText = 'Add new';
+        this.addBtn.icon = 'fa fa-plus-circle';
+        this.addBtn.showBothIconAndText = true;
+        this.addBtn.cssClass = 'sui-btn';
+
+    }
 }
 
 export class ColumnModel {
@@ -121,6 +135,11 @@ export class ColumnModel {
     public autoCreateSelectListFromData: boolean = true;
     public required: boolean = false;
     public showInQuickFilter: boolean = false;
+    public showOnlyInEditForm: boolean = false;
+    public isUnBoundColumn: boolean = false;
+    public canEditUnBoundColum: boolean = false;
+
+
     constructor(public fieldName: string,
         public displayName: string,
         public fieldType: EnumFieldType = EnumFieldType.text) { }

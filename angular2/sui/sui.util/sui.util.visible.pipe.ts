@@ -5,9 +5,15 @@ import { ColumnModel } from '../sui.table/sui.table.model';
     name: 'visible'
 })
 export class VisiblePipe implements PipeTransform {
-     transform(items: ColumnModel[], hiddenFields: string[]): any {
-         return items.filter(item => {
-            return !hiddenFields.includes(item.fieldName);
+    transform(items: ColumnModel[], hiddenFields: string[]): any {
+        return items.filter(item => {
+            return this.isVisible(item, hiddenFields);
         });
+    }
+
+    isVisible(column: ColumnModel, hiddenFields: string[]): boolean {
+        let exist = hiddenFields.find(y => y === column.fieldName);
+        if (exist === undefined)
+            return true;
     }
 }

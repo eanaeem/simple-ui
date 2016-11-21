@@ -26,6 +26,7 @@ import { CardComponent } from './sui.card/sui.card.component';
 import { BadgeComponent } from './sui.badge/sui.badge.component';
 import { TagComponent } from './sui.tag/sui.tag.component';
 import { ListComponent } from './sui.list/sui.list.component';
+import { ButtonComponent } from './sui.button/sui.button.component';
 
 import { AccordionComponent } from './sui.accordion/sui.accordion.component';
 import { AccordionGroupComponent } from './sui.accordion/sui.accordion.group.component';
@@ -46,6 +47,7 @@ import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.c
         AccordionToggleComponent,
         AlertComponent,
         BadgeComponent,
+        ButtonComponent,
         CardComponent,
         FormComponent,
         InputComponent,
@@ -79,6 +81,7 @@ import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.c
         AccordionToggleComponent,
         AlertComponent,
         BadgeComponent,
+        ButtonComponent,
         CardComponent,
         FormComponent,
         InputComponent,
