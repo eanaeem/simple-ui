@@ -1,0 +1,6 @@
+<button class="{{'sui-btn-block sui-left-align ' + cssClass}}" [ngStyle]="style" (click)="visible=!visible"  >
+    <span class="{{headerClass}}" [ngStyle]="headerStyle"> {{header}}  </span>  <i class="{{icon}}">  </i>
+  </button>
+<div class="sui-accordion-content sui-container" *ngIf="visible">
+    <ng-content></ng-content>
+</div>

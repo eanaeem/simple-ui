@@ -1,0 +1,8 @@
+<div class="{{'sui-content sui-display-container '+cssClass}}" [ngStyle]="style">
+
+    <a *ngIf="showIndicators" [ngStyle]="indicatorStyle" class="{{'sui-btn-floating sui-hover-dark-grey sui-display-left '}+ indicatorCssClass}"
+        (click)="onPreviousClick()">&#10094;</a>
+    <a *ngIf="showIndicators" [ngStyle]="indicatorStyle" class="{{'sui-btn-floating sui-hover-dark-grey sui-display-right  '+ indicatorCssClass}}"
+        (click)="onNextClick()">&#10095;</a>
+    <ng-content></ng-content>
+</div>

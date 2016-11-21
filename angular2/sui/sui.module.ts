@@ -26,6 +26,8 @@ import { CardComponent } from './sui.card/sui.card.component';
 import { BadgeComponent } from './sui.badge/sui.badge.component';
 import { TagComponent } from './sui.tag/sui.tag.component';
 import { ListComponent } from './sui.list/sui.list.component';
+import { AccordionContentComponent } from './sui.accordion/sui.accordion.content.component';
+import { AccordionComponent } from './sui.accordion/sui.accordion.component';
 
 
 @NgModule({
@@ -37,6 +39,8 @@ import { ListComponent } from './sui.list/sui.list.component';
         PagingPipe,
         VisiblePipe,
 
+        AccordionComponent,
+        AccordionContentComponent,
         AlertComponent,
         BadgeComponent,
         CardComponent,
@@ -53,7 +57,7 @@ import { ListComponent } from './sui.list/sui.list.component';
         RatingComponent,
         TableComponent,
         TagComponent,
-        ],
+    ],
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
     exports: [
         CommonModule,
@@ -67,6 +71,8 @@ import { ListComponent } from './sui.list/sui.list.component';
         PagingPipe,
         VisiblePipe,
 
+        AccordionComponent,
+        AccordionContentComponent,
         AlertComponent,
         BadgeComponent,
         CardComponent,
