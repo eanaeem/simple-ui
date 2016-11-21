@@ -26,8 +26,10 @@ import { CardComponent } from './sui.card/sui.card.component';
 import { BadgeComponent } from './sui.badge/sui.badge.component';
 import { TagComponent } from './sui.tag/sui.tag.component';
 import { ListComponent } from './sui.list/sui.list.component';
-import { AccordionContentComponent } from './sui.accordion/sui.accordion.content.component';
+
 import { AccordionComponent } from './sui.accordion/sui.accordion.component';
+import { AccordionGroupComponent } from './sui.accordion/sui.accordion.group.component';
+import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.component';
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { AccordionComponent } from './sui.accordion/sui.accordion.component';
         VisiblePipe,
 
         AccordionComponent,
-        AccordionContentComponent,
+        AccordionGroupComponent,
+        AccordionToggleComponent,
         AlertComponent,
         BadgeComponent,
         CardComponent,
@@ -72,7 +75,8 @@ import { AccordionComponent } from './sui.accordion/sui.accordion.component';
         VisiblePipe,
 
         AccordionComponent,
-        AccordionContentComponent,
+        AccordionGroupComponent,
+        AccordionToggleComponent,
         AlertComponent,
         BadgeComponent,
         CardComponent,

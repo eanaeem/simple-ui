@@ -1,6 +1,6 @@
 {
   "name": "angular2-simple-ui",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": " Angular 2  Simple Material Design UI Components customisable with Simple 30 KB CSS with LESS support and full features support , just plugin up and run for clarity look at sample examples",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 4345",

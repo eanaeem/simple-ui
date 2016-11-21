@@ -1,0 +1,7 @@
+<button class="{{'sui-btn-block sui-left-align ' + cssClass}}" [ngStyle]="style" (click)="isOpened=!isOpened"  >
+    <span class="{{headerClass}}" [ngStyle]="headerStyle"> {{header}}  </span>  <i class="{{icon}}">  </i>
+    <ng-content select="accordion-heading"></ng-content
+  </button>
+<div class="sui-accordion-content sui-container" *ngIf="isOpened">
+    <ng-content></ng-content>
+</div>
