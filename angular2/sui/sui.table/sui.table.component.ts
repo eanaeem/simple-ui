@@ -77,7 +77,7 @@ export class TableComponent implements OnInit {
         }
     }
 
-    getData() {
+     getData() {
         if (this.tableModel.data && this.tableModel.data.length) {
             this.tableData = this.tableModel.data;
         } else if (this.tableModel.getUrl) {
@@ -87,7 +87,13 @@ export class TableComponent implements OnInit {
                 this.tableData = data;
             }, error => {
                 this.showLoader = false;
-                this.errorMessage = <any>error;
+                if (typeof error === 'string') {
+                    this.errorMessage = <any>error;
+                } else if (error.message) {
+                    this.errorMessage = <any>error.message;
+                } else {
+                    this.errorMessage = error.toString();
+                }
             });
         }
         return this.tableData;
