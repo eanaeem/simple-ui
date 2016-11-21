@@ -1,0 +1,4 @@
+<button (click)="onBtnClick($event)" class="{{model.cssClass}}" [ngStyle]="model.style"> 
+  <i class="{{model.icon}}" *ngIf="model.icon"> </i>
+ <span *ngIf="!model.icon || model.showBothIconAndText"> {{model.displayText}} </span>
+</button>
