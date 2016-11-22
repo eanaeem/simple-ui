@@ -42,6 +42,8 @@ export class TableComponent implements OnInit {
     @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
     filters: FilterModel = new FilterModel();
+    filterMenuSearchFilters: FilterModel = new FilterModel();
+
     hiddenFields: string[] = [];
     sortKey: string;
     descOrder: boolean;
@@ -77,26 +79,17 @@ export class TableComponent implements OnInit {
         });
         this.currentPage = this.tableModel.pagination.currentPage;
         this.pageSize = this.tableModel.pagination.pageSize;
-        this.getPages();
+        let data = this.getData();
+        if (data) {
+            let noOfPages = data.length / this.pageSize;
+            this.totalPageCount = noOfPages;
+        }
     }
 
     getType(field: EnumFieldType): string {
         return EnumFieldType[field];
     }
 
-    getPages() {
-        let data = this.getData();
-        if (data) {
-            let noOfPages = data.length / this.pageSize;
-            this.totalPageCount = noOfPages;
-            let pageNumbers: any = [];
-            let i = 1;
-            while (i <= noOfPages) {
-                pageNumbers.push(i++);
-            }
-            return pageNumbers;
-        }
-    }
 
     getData() {
         if (this.tableData && this.tableData.length)
@@ -128,7 +121,6 @@ export class TableComponent implements OnInit {
 
     onpageSizeChange(event: number) {
         this.pageSize = event;
-        this.getPages();
     }
 
     onEditRow(row: any) {
@@ -226,13 +218,7 @@ export class TableComponent implements OnInit {
     }
 
     onPageClick(item: number) {
-        if (item === 0) {
-            this.currentPage = 1;
-        } else if (item > this.totalPageCount) {
-            this.currentPage = this.totalPageCount;
-        } else {
-            this.currentPage = item;
-        }
+        this.currentPage = item;
     }
 
     getDisplayRecordsTex(): string {
@@ -247,8 +233,8 @@ export class TableComponent implements OnInit {
 
     onFilterChange(event: any, key: string) {
         let value = event.target.value;
-        let filterModel = new FilterModel();
         if (key === 'search') {
+            let filterModel = new FilterModel();
             let keyValues: FilterKeyValue[] = [];
             this.getColumns().forEach(y => {
                 if (y.canFilter) {
@@ -260,8 +246,9 @@ export class TableComponent implements OnInit {
             });
             filterModel.keyValues = keyValues;
             filterModel.orCondition = true;
+            this.filters = filterModel;
         } else {
-
+            let filterModel = new FilterModel();
             let prop = this.filters.keyValues.find(y => y.key === key);
             if (prop) {
                 prop.value = value;
@@ -273,11 +260,51 @@ export class TableComponent implements OnInit {
             }
             filterModel.keyValues = this.filters.keyValues;
             filterModel.orCondition = false;
+            this.filters = filterModel;
         }
+    }
+
+    bindFilterToField(key: string, value: any, isRemove: boolean = false) {
+        let filterModel = new FilterModel();
+        if (!isRemove) {
+            let prop = new FilterKeyValue();
+            prop.key = key;
+            prop.value = value;
+            this.filters.keyValues.push(prop);
+        } else {
+            let index = this.filters.keyValues.findIndex(y => y.key == key && y.value == value);
+            this.filters.keyValues.splice(index, 1);
+        }
+        filterModel.keyValues = this.filters.keyValues;
+        filterModel.orCondition = true;
         this.filters = filterModel;
 
     }
+    onFilterMenuCheckClick(event: any, field: string, value: any) {
+        if (event.target.checked) {
+            this.bindFilterToField(field, value);
+        } else {
+            this.bindFilterToField(field, value, true);
+        }
+    }
 
+    onFilterMenuSearchChange(event: any) {
+        let value = event.target.value;
+        let filterModel = new FilterModel();
+        let prop = this.filterMenuSearchFilters.keyValues.find(y => y.value === value);
+        if (prop) {
+            prop.value = value;
+        } else {
+            prop = new FilterKeyValue();
+            prop.key = value;
+            prop.value = value;
+            this.filterMenuSearchFilters.keyValues.push(prop);
+        }
+        filterModel.keyValues = this.filterMenuSearchFilters.keyValues;
+        filterModel.orCondition = false;
+        filterModel.isStringArray = true;
+        this.filterMenuSearchFilters = filterModel;
+    }
     getSelectList(column: ColumnModel) {
         let data: ISelectModel[] = [];
         let opt = new SelectModel();

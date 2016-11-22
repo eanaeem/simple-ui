@@ -26,14 +26,14 @@
                     </span>
                 </div>
                 <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==1" [paginationModel]="tableModel.pagination"
-                    [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)">
+                    [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)">
                 </sui-pagination>
             </div>
             <div class="sui-right sui-inline-flex">
                 <div class="sui-right sui-margin" *ngIf="columns && columns.length">
 
                     <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==0" [paginationModel]="tableModel.pagination"
-                        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)">
+                        [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)">
                     </sui-pagination>
                 </div>
             </div>
@@ -52,18 +52,18 @@
 
                         </a>
                         <a class="sui-dropdown-hover"> <i class="fa fa-sort-desc"> </i>
-                            <div class="sui-dropdown-content sui-border sui-greay">
-                                <input class="{{column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" placeholder="Search ..." *ngIf="column.fieldType!=5 && column.fieldType!=4"
+                            <div class="sui-dropdown-content sui-border sui-filter-panel">
+                                <input class="{{column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" (keyup)="onFilterMenuSearchChange($event)" placeholder="Search ..." *ngIf="column.fieldType!=5 && column.fieldType!=4"
                                     [type]="getType(column.fieldType)">
-                                <div *ngFor="let item of getSelectList(column);let ri=index;trackBy:trackByIndex">
+                                <div *ngFor="let item of getSelectList(column) ;let ri=index;trackBy:trackByIndex">
                                     <div *ngIf="item && item.value && item.value !=''" class="sui-left sui-left-align sui-margin-left-5">
-                                        <input type="checkbox"> {{item.value}}
+                                            <input type="checkbox" (change)="onFilterMenuCheckClick($event,column.fieldName,item.value)" > {{item.value}} <br>
                                     </div>
                                 </div>
                             </div>
                         </a>
                     </th>
-                    <th> </th>
+                    <th class="{{tableModel.headerCssClass}}" [ngStyle]="tableModel.headerStyle"> </th>
                 </tr>
                 <tr *ngIf="tableModel.showFilterRow">
                     <th *ngFor="let column of columns | visible:hiddenFields;let kk=index;trackBy:trackByIndex">
@@ -101,9 +101,9 @@
     </div>
     <sui-progress [showSpineer]="showLoader"> </sui-progress>
     <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==3" [paginationModel]="tableModel.pagination"
-        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
+        [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
     <sui-pagination class="sui-right" *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==2" [paginationModel]="tableModel.pagination"
-        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
+        [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
 
 </div>
 

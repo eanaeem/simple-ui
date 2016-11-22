@@ -11,15 +11,22 @@ export class FilterPipe implements PipeTransform {
             if (!filter.orCondition) {
                 for (let ft of filter.keyValues) {
                     items = items.filter(item => {
-                        return contains(item[ft.key], ft.value);
+                        if (!filter.isStringArray)
+                            return contains(item[ft.key], ft.value);
+                        return contains(item, ft.value);
                     });
                 }
             } else {
                 let res: any[] = [];
                 for (let item of items) {
                     for (let ft of filter.keyValues) {
-                        if (contains(item[ft.key], ft.value))
-                            res.push(item);
+                        if (!filter.isStringArray) {
+                            if (contains(item[ft.key], ft.value))
+                                res.push(item);
+                        } else {
+                            if (contains(item, ft.value))
+                                res.push(item);
+                        }
                     }
                 }
                 return res;

@@ -7,4 +7,5 @@ export class FilterModel {
     orCondition: boolean = false;
     serversideFiltering: boolean = false;
     serversideUrl?: string;
+    isStringArray:boolean=false;
 }

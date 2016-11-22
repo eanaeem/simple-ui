@@ -19,26 +19,28 @@ export class PaginationComponent implements OnInit {
     pageSize: number = 10;
     onpageSizeChange(event: any) {
         this.pageSize = event.target.value;
+        this.updatePageCount();
         this.pageSizeChange.emit(this.pageSize);
+        this.currentPage = 1;
+        this.pageClick.emit(this.currentPage);
     }
     onPageClick(item: number) {
-        this.currentPage = item;
-        this.pageClick.emit(item);
+        if (item === 0) {
+            this.currentPage = 1;
+        } else if (item > this.totalPageCount) {
+            this.currentPage = this.totalPageCount;
+        } else {
+            this.currentPage = item;
+        }
+        this.pageClick.emit(this.currentPage);
     }
     ngOnInit(): void {
-        
+        this.updatePageCount();
     }
-    getPages() {
+    updatePageCount(): void {
         let noOfPages = this.totalRecords / this.pageSize;
         this.totalPageCount = noOfPages;
-        let pageNumbers: any = [];
-        let i = 1;
-        while (i <= noOfPages) {
-            pageNumbers.push(i++);
-        }
-        return pageNumbers;
     }
-
     getDisplayRecordsTex(): string {
 
         let startRecord = ((this.currentPage - 1) * (this.pageSize)) + 1;

@@ -1564,6 +1564,11 @@ input[type=radio].sui-radio:disabled + .sui-validate {
   background-color: #ffffff;
   max-height: 600px;
 }
+.sui-filter-panel {
+  overflow: auto;
+  background-color: #F7F7F7;
+  max-height: 300px;
+}
 .sui-pagination-container {
   margin: 0;
   max-height: 60px;
