@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { INavigationModel } from './sui.navigation.model';
+import { NavigationModel } from './sui.navigation.model';
 
 @Component({
   selector: 'sui-nav',
@@ -7,7 +7,7 @@ import { INavigationModel } from './sui.navigation.model';
 })
 export class NavigationComponent {
   showSmallMenu: boolean = false;
-  @Input() nav: INavigationModel;
+  @Input() nav: NavigationModel;
   @Input() showSideNav: boolean;
   showSide: boolean = false;
   onBarsClicked() {

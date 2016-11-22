@@ -18,6 +18,7 @@ import { FormComponent } from './sui.form/sui.form.component';
 import { AddPipe } from './sui.util/sui.util.add.pipe';
 import { InputComponent } from './sui.form/sui.input.component';
 import { AlertComponent } from './sui.alert/sui.alert.component';
+import { PaginationComponent } from './sui.pagination/sui.pagination.component';
 import { PanelComponent } from './sui.panel/sui.panel.component';
 import { NotesComponent } from './sui.notes/sui.notes.component';
 import { QuotesComponent } from './sui.quotes/sui.quotes.component';
@@ -57,6 +58,7 @@ import { ButtonGroupComponent } from './sui.button/sui.button.group.component';
         ModalComponent,
         NavigationComponent,
         NotesComponent,
+        PaginationComponent,
         PanelComponent,
         ProgressComponent,
         ConfirmModalComponent,
@@ -92,6 +94,7 @@ import { ButtonGroupComponent } from './sui.button/sui.button.group.component';
         ModalComponent,
         NavigationComponent,
         NotesComponent,
+        PaginationComponent,
         PanelComponent,
         ProgressComponent,
         ConfirmModalComponent,

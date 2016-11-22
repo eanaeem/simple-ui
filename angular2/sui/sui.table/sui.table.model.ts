@@ -1,5 +1,7 @@
 
 import { ButtonModel } from '../sui.util/sui.util.button.model';
+import { PaginationModel } from '../sui.util/sui.util.pagination.model';
+
 
 export enum EnumFieldType {
     text = 0,
@@ -33,26 +35,13 @@ export interface ISelectModel {
     key: string;
     value: string;
 }
-export class PaginationModel {
-    public showPaging: boolean = true;
-    public pageSize: number = 10;
-    public quickAccessMaxPages: number = 5;
-    public showGoToEndArrow: boolean = true;
-    public showGoToStartArrow: boolean = true;
-    public showGoToNextArrow: boolean = true;
-    public showGoToPreviousArrow: boolean = true;
-    public currentPage: number = 1;
-    public activePageCssClass: string = 'sui-theme';
-    public clsGoToNextPageIcon: string = 'fa fa-angle-right';
-    public clsGoToPreviousPageIcon: string = 'fa fa-angle-left';
-    public clsGoToStartIcon: string = 'fa fa-angle-double-left';
-    public clsGoToEndIcon: string = 'fa fa-angle-double-right';
-    public toolTipGoToNext = 'Go to next page';
-    public toolTipGoToPrevious = 'Go to next page';
-    public toolTipGoToStart = 'Go to first page';
-    public toolTipGoToEnd = 'Go to last page';
-}
 
+export enum Position {
+    TopRight,
+    TopLeft,
+    BottomRight,
+    BottomLeft
+}
 
 export class SelectModel implements ISelectModel {
     public key: string = '';
@@ -71,30 +60,38 @@ export class TableModel {
     public enableServerSideExport: boolean = false;
     public cssClass: Object = 'sui-table-all';
     public style: Object = {};
-    public headerCssClass: Object = {};
-    public rowCssClass: Object = '';
+    public headerCssClass: string = 'sui-padding sui-border-right sui-theme  ';
+    public rowCssClass: string = 'sui-padding ';
     public rowStyle: Object = {};
     public headerStyle: Object = {};
     public editType: EnumEditType = EnumEditType.FormEdit;
-    public sortIcon: string = 'fa fa-sort';
-    public sortDescIcon: string = 'fa fa-sort-desc';
-    public sortAscIcon: string = 'fa fa-sort-asc';
+
+    public cssSortIcon: string = 'sui-margin-right';
+    public styleSortIcon: Object = {};
+    public cssHeaderText: string = 'sui-margin-right';
+    public styleCssHeaderText: Object = {};
+    public sortIcon: string = '';
+    public sortDescIcon: string = 'fa fa-long-arrow-down';
+    public sortAscIcon: string = 'fa fa-long-arrow-up';
     public searchInputCssClass: string = 'sui-input';
     public searchInputPlaceholderText: string = 'Search ...';
+    public paginingControlPosition: Position = Position.TopRight;
     public pagination: PaginationModel = new PaginationModel();
     public showColumnChooserButton: boolean = true;
-    public cssClassColumnChooser: string = 'sui-btn sui-theme';
-    public columnChooserText: string = 'Choose Columns';
+    public cssClassColumnChooser: string = ' sui-btn sui-theme ';
+    public columnChooserText: string = ' Choose Columns';
+    public columnChooserIcon: string = 'fa fa-bars';
+    
     public tableHeader: string = '';
     public cssTableHeader: string = '';
     public styleTableHeader: Object = {};
-    public pageSizeArray: number[] = [5, 10, 25, 50, 100, 500, 1000];
     public canEdit: boolean = true;
     public canAdd: boolean = true;
     public canDelete: boolean = true;
     public editRecordHeader: string = 'Edit record';
     public addRecordHeader: string = 'Add new record';
-
+    public showColumnFilterMenu: boolean = true;
+    public showFilterRow: boolean = false;
     public rowActionButtons: ButtonModel[] = [];
     public getUrl?: string;
     public addUrl?: string;

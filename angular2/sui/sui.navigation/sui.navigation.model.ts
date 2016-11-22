@@ -1,40 +1,23 @@
-export interface INavigationModel {
-    brand: string;
-    brandLogoPath?: string;
-    links?: IRouteLinkModel[];
-    cssClass?: string;
-    style?: string;
-    showBothBrandAndLogo: boolean;
-
-}
-
-export interface IRouteLinkModel {
-    routerLink: string;
-    displayName: string;
-    cssClass?: string;
-    style?: string;
-    icon?: string;
-    showBothIconText: boolean;
-    requireLogin: boolean;
-    dropdownLinks?: IRouteLinkModel[];
-}
-
-export class NavigationModel implements INavigationModel {
-    public links: IRouteLinkModel[];
-    public showBothBrandAndLogo: boolean= false;
+export class NavigationModel {
+    public brandLogoPath?: string;
+    public cssClass?: string;
+    public style?: string;
+    public links: RouteLinkModel[];
+    public showBothBrandAndLogo: boolean = false;
+    public brandCssClass: string = ' sui-brand ';
+    public brandStyle: Object = {};
     constructor(public brand: string) {
         this.links = [];
     }
 }
 
-export class RouteLinkModel implements IRouteLinkModel {
-    public dropdownLinks?: IRouteLinkModel[];
+export class RouteLinkModel {
+    public dropdownLinks?: RouteLinkModel[] =[]
     public showBothIconText: boolean = false;
     public requireLogin: boolean = false;
-    constructor(public routerLink: string,
-                public displayName: string,
-                public icon?: string,
-                public cssClass?: string) {
-        this.dropdownLinks = [];
+    public style?: string;
+    public cssClass?: string;
+    public icon?: string;
+    constructor(public routerLink: string, public displayName: string) {
     }
 }

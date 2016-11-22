@@ -1,9 +1,9 @@
 <div class="sui-margin-top">
     <sui-alert [message]="errorMessage" [type]="alertType" heading="Error !"> </sui-alert>
-    <sui-progress [showSpineer]="showLoader"> </sui-progress>
     <div class="sui-table-container" *ngIf="tableModel && showTable">
+        <h2 [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
         <div class="sui-margin-bottom">
-            <div class="sui-col s5">
+            <div class="sui-left">
                 <div class="sui-margin">
                     <input class="sui-input-inline sui-border" *ngIf="tableModel.enableQuickFilterBy && tableData && tableData.length " placeholder="{{tableModel.searchInputPlaceholderText}}"
                         type="text" (keyup)="onFilterChange($event,'search')">
@@ -15,42 +15,57 @@
                 </select>
                 </span>
                     </span>
-                </div>
-            </div>
-            <div class="sui-col s2">
-                <h2 [ngClass]="this.tableModel.cssTableHeader" [ngStyle]="this.tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
-            </div>
-            <div class="sui-col s5">
-                <div class="sui-right sui-margin" *ngIf="columns && columns.length">
                     <sui-button *ngIf="tableModel.canAdd" (onClick)="onEditRow()" [model]="tableModel.addBtn"> </sui-button>
-                    <div class="sui-dropdown-hover" *ngIf="tableModel.showColumnChooserButton">
-                        <button class="{{tableModel.cssClassColumnChooser}}">{{tableModel.columnChooserText}}</button>
+                    <span class="sui-dropdown-hover sui-inline-flex" *ngIf="tableModel.showColumnChooserButton">
+                        <a class="{{tableModel.cssClassColumnChooser}}"><i class="{{tableModel.columnChooserIcon}}"> </i>{{tableModel.columnChooserText}} </a>
                         <div class="sui-dropdown-content sui-border">
                             <a (click)="onColumnChooserClick(column)" class="sui-pointer" *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
                                 <i *ngIf="showColumnIcon(column)" class="fa fa-check"> </i> {{column.displayName}}
                             </a>
                         </div>
-                    </div>
+                    </span>
+                </div>
+                <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==1" [paginationModel]="tableModel.pagination"
+                    [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)">
+                </sui-pagination>
+            </div>
+            <div class="sui-right sui-inline-flex">
+                <div class="sui-right sui-margin" *ngIf="columns && columns.length">
+
+                    <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==0" [paginationModel]="tableModel.pagination"
+                        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)">
+                    </sui-pagination>
                 </div>
             </div>
         </div>
-        <table [ngClass]="tableModel.cssClass" [ngStyle]="tableModel.style" *ngIf="tableData && tableData.length">
+        <table [ngClass]="tableModel.cssClass" [ngStyle]="tableModel.style">
             <thead>
                 <tr>
-                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{' sui-padding '+ this.tableModel.headerCssClass}}"
-                        [ngStyle]="this.tableModel.headerStyle">
-                        <a (click)="onSortClick(column)" class="sui-pointer">
-                            <span> {{column.displayName}} </span>
-                            <span class="sui-margin-left-5" *ngIf="column.canSort"> 
+                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{tableModel.headerCssClass}}"
+                        [ngStyle]="tableModel.headerStyle">
+                        <a (click)="onSortClick(column)" class="sui-pointer sui-left">
+                            <span class="{{tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
                                     <i class="{{sortedIcon}}" *ngIf="sortKey == column.fieldName"> </i>
                                     <i class="{{tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
                             </span>
-                        </a>
+                            <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleCssHeaderText"> {{column.displayName}} </span>
 
+                        </a>
+                        <a class="sui-dropdown-hover"> <i class="fa fa-sort-desc"> </i>
+                            <div class="sui-dropdown-content sui-border sui-greay">
+                                <input class="{{column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" placeholder="Search ..." *ngIf="column.fieldType!=5 && column.fieldType!=4"
+                                    [type]="getType(column.fieldType)">
+                                <div *ngFor="let item of getSelectList(column);let ri=index;trackBy:trackByIndex">
+                                    <div *ngIf="item && item.value && item.value !=''" class="sui-left sui-left-align sui-margin-left-5">
+                                        <input type="checkbox"> {{item.value}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </th>
                     <th> </th>
                 </tr>
-                <tr>
+                <tr *ngIf="tableModel.showFilterRow">
                     <th *ngFor="let column of columns | visible:hiddenFields;let kk=index;trackBy:trackByIndex">
                         <div *ngIf="column.canFilter">
                             <input class="{{column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" *ngIf="column.fieldType!=5 && column.fieldType!=4"
@@ -65,10 +80,10 @@
                 </tr>
 
             </thead>
-            <tbody>
+            <tbody *ngIf="tableData && tableData.length">
                 <tr *ngFor="let row of tableData | filter : filters |orderBy:sortKey:descOrder| pagination :currentPage:pageSize| delete:deleteIndex| add:rowToAdd ; let in=index;trackBy:trackByIndex ">
-                    <td *ngFor="let k=index;trackBy:trackByIndex;let col of columns | visible:hiddenFields" [ngClass]="this.tableModel.rowCssClass"
-                        [ngStyle]="this.tableModel.rowStyle">
+                    <td *ngFor="let k=index;trackBy:trackByIndex;let col of columns | visible:hiddenFields" [ngClass]="tableModel.rowCssClass"
+                        [ngStyle]="tableModel.rowStyle">
                         <span *ngIf="col.fieldType!==4 &&col.fieldType!==7">{{row[col.fieldName]}}</span>
                         <input class="sui-table-check" disabled type="checkbox" *ngIf="col.fieldType===4" [(ngModel)]="row[col.fieldName]" />
                         <img src="{{row[col.fieldName]}}" *ngIf="col.fieldType===7" />
@@ -76,28 +91,20 @@
                     <td>
                         <sui-button *ngIf="tableModel.canEdit" (onClick)="onEditRow(row)" [model]="tableModel.editBtn"> </sui-button>
                         <sui-button *ngIf="tableModel.canDelete" (onClick)="onDeleteRow(row)" [model]="tableModel.deleteBtn"> </sui-button>
-                        <sui-button *ngFor="let btn of tableModel.rowActionButtons"  (onClick)="onActionButtonClick(btn.id, row)" [model]="btn"> </sui-button>
-                        
-                      
+                        <sui-button *ngFor="let btn of tableModel.rowActionButtons" (onClick)="onActionButtonClick(btn.id, row)" [model]="btn"> </sui-button>
+
+
                     </td>
                 </tr>
             </tbody>
         </table>
-
     </div>
-    <div class="sui-pagination-container">
-        <ul class="sui-pagination sui-border sui-round" *ngIf="tableModel.pagination.showPaging && totalPageCount>1">
-            <li *ngIf="tableModel.pagination.showGoToStartArrow"><a (click)="onPageClick(1)" title="{{tableModel.pagination.toolTipGoToStart}}"><i class="{{tableModel.pagination.clsGoToStartIcon}}"> </i> </a></li>
-            <li *ngIf="tableModel.pagination.showGoToPreviousArrow"><a (click)="onPageClick(currentPage-1)" title="{{tableModel.pagination.toolTipGoToPrevious}}"><i class="{{tableModel.pagination.clsGoToPreviousPageIcon}}"> </i></a></li>
-            <li *ngFor="let item of getPages()"><a (click)="onPageClick(item)" class="{{currentPage==item ? tableModel.pagination.activePageCssClass : 'sui-pointer'}}">{{item}}</a></li>
-            <li *ngIf="tableModel.pagination.showGoToNextArrow"><a (click)="onPageClick(currentPage+1)" title="{{tableModel.pagination.toolTipGoToNext}}"><i class="{{tableModel.pagination.clsGoToNextPageIcon}}"> </i></a></li>
-            <li *ngIf="tableModel.pagination.showGoToEndArrow"><a (click)="onPageClick(totalPageCount)" title="{{tableModel.pagination.toolTipGoToEnd}}"><i class="{{tableModel.pagination.clsGoToEndIcon}}"> </i></a></li>
-        </ul>
+    <sui-progress [showSpineer]="showLoader"> </sui-progress>
+    <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==3" [paginationModel]="tableModel.pagination"
+        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
+    <sui-pagination class="sui-right" *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==2" [paginationModel]="tableModel.pagination"
+        [totalRecords]="tableData.length" (pageSizeChange)="getPages($event)" (pageClick)="onPageClick($event)"> </sui-pagination>
 
-        <select class="sui-select sui-border sui-right" [(ngModel)]="pageSize" (change)="onpageSizeChange($event)" *ngIf="tableModel.pagination.showPaging && pageSize>1 && tableData && tableData.length"> 
-             <option *ngFor="let item of tableModel.pageSizeArray;" [value]="item">{{item}}</option>
-         </select>
-    </div>
 </div>
 
 <sui-modal [(visible)]=" showDialog " headerText="{{modalHeaderText}} ">

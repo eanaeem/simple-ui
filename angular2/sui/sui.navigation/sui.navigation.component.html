@@ -2,10 +2,10 @@
     <li *ngIf="!nav.showBothBrandAndLogo">
         <a href="/">
             <img *ngIf="nav.brandLogoPath && !nav.showBothBrandAndLogo" src="{{nav.brandLogoPath}}">
-            <span *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
+            <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
             <span *ngIf="nav.showBothBrandAndLogo">
               <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-              <span class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
+              <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle"> {{nav.brand}} </span>
             </span>
         </a>
     </li>
@@ -15,12 +15,12 @@
         </a>
     </li>
     <li *ngIf="nav.showBothBrandAndLogo">
-        <a href="/" class="sui-margin-left sui-margin-right sui-large">
+        <a href="/" class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle">
             {{nav.brand}}
         </a>
     </li>
-    <li *ngFor="let item of nav.links">
-        <a routerLink="{{item.routerLink}}" routerLinkActive="active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
+    <li *ngFor="let item of nav.links" class="sui-right">
+        <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
             <i *ngIf="item.icon" class="{{item.icon}}"> </i>
             <span *ngIf="item.showBothIconText">  
                 <i *ngIf="item.icon" class="{{item.icon}}"> </i> {{item.displayName}} 
@@ -40,10 +40,10 @@
     <li>
         <a href="/">
             <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-            <span *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
+            <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
             <span *ngIf="nav.showBothBrandAndLogo">
               <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-              <span class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
+              <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
             </span>
         </a>
     </li>
@@ -74,10 +74,10 @@
     <span class="sui-opennav sui-xlarge" (click)="sui_open()">&#9776;</span>
     <a href="/">
         <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-        <span *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
+        <span class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
         <span *ngIf="nav.showBothBrandAndLogo"> </span>
         <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-        <span class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
+        <span class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
     </a>
 
 </header>

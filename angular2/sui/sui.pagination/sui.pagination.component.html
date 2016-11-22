@@ -1,0 +1,41 @@
+<div class="sui-pagination-container" *ngIf="paginationModel&& paginationModel.showPaging">
+    <ul [ngStyle]="paginationModel.stylePagination" class="{{paginationModel.cssPagination}}">
+        <li *ngIf="paginationModel.showPageSizeSelection">
+            <a>
+                <span>{{paginationModel.txtPageSelection}}</span>
+                <select [ngStyle]="paginationModel.styleSelectPageSize" class="{{paginationModel.cssSelectPageSize}}" [(ngModel)]="pageSize"
+                    (change)="onpageSizeChange($event)"> 
+             <option *ngFor="let item of paginationModel.pageSizeArray;" [value]="item">{{item}}</option>
+             </select>
+            </a>
+
+        </li>
+        <li *ngIf="paginationModel.showRecordNumbers">
+            <a>  {{getDisplayRecordsTex()}} </a>
+        </li>
+        <li *ngIf="paginationModel.showGoToStartArrow">
+            <a (click)="onPageClick(1)" title="{{paginationModel.toolTipGoToStart}}">
+                <i class="{{paginationModel.clsGoToStartIcon}}"> </i> </a>
+        </li>
+        <li *ngIf="paginationModel.showGoToPreviousArrow">
+            <a (click)="onPageClick(currentPage-1)" title="{{paginationModel.toolTipGoToPrevious}}">
+                <i class="{{paginationModel.clsGoToPreviousPageIcon}}"> </i>
+            </a>
+        </li>
+        <span *ngIf="paginationModel.showPageNumbers">
+                <li *ngFor="let item of getPages()">
+                <a (click)="onPageClick(item)" class="{{currentPage==item ? paginationModel.activePageCssClass : 'sui-pointer'}}">{{item}}
+                </a>
+            </li>
+             </span>
+        <li *ngIf="paginationModel.showGoToNextArrow">
+            <a (click)="onPageClick(currentPage+1)" title="{{paginationModel.toolTipGoToNext}}">
+                <i class="{{paginationModel.clsGoToNextPageIcon}}"> </i></a>
+        </li>
+        <li *ngIf="paginationModel.showGoToEndArrow">
+            <a (click)="onPageClick(totalPageCount)" title="{{paginationModel.toolTipGoToEnd}}">
+                <i class="{{paginationModel.clsGoToEndIcon}}"> </i>
+            </a>
+        </li>
+    </ul>
+</div>

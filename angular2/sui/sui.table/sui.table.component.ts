@@ -99,6 +99,9 @@ export class TableComponent implements OnInit {
     }
 
     getData() {
+        if (this.tableData && this.tableData.length)
+            return this.tableData;
+
         if (this.tableModel.data && this.tableModel.data.length) {
             this.tableData = this.tableModel.data;
         } else if (this.tableModel.getUrl) {
@@ -123,8 +126,8 @@ export class TableComponent implements OnInit {
         return this.tableData;
     }
 
-    onpageSizeChange(event: any) {
-        this.pageSize = event.target.value;
+    onpageSizeChange(event: number) {
+        this.pageSize = event;
         this.getPages();
     }
 
@@ -232,6 +235,16 @@ export class TableComponent implements OnInit {
         }
     }
 
+    getDisplayRecordsTex(): string {
+        if (this.tableData && this.tableData.length) {
+            let startRecord = (this.currentPage - 1) * this.pageSize + 1;
+            let rec = this.currentPage * this.pageSize;
+            let endRecord = rec > this.tableData.length ? this.tableData.length : rec;
+            return startRecord + ' - ' + endRecord + ' of ' + this.tableData.length;
+        }
+        return '';
+    }
+
     onFilterChange(event: any, key: string) {
         let value = event.target.value;
         let filterModel = new FilterModel();
@@ -271,19 +284,21 @@ export class TableComponent implements OnInit {
         opt.key = '';
         opt.value = '';
         data.push(opt);
-        if (column.autoCreateSelectListFromData) {
-            for (let item of this.tableData) {
-                let value = item[column.fieldName];
-                let exist = data.find(y => y.value === value);
-                if (exist === undefined) {
-                    let select = new SelectModel();
-                    select.key = value;
-                    select.value = value;
-                    data.push(select);
+        if (this.tableData) {
+            if (column.autoCreateSelectListFromData) {
+                for (let item of this.tableData) {
+                    let value = item[column.fieldName];
+                    let exist = data.find(y => y.value === value);
+                    if (exist === undefined) {
+                        let select = new SelectModel();
+                        select.key = value;
+                        select.value = value;
+                        data.push(select);
+                    }
                 }
+            } else {
+                data = column.selectList;
             }
-        } else {
-            data = column.selectList;
         }
         return data;
     }
