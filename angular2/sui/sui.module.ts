@@ -31,6 +31,7 @@ import { ButtonComponent } from './sui.button/sui.button.component';
 import { AccordionComponent } from './sui.accordion/sui.accordion.component';
 import { AccordionGroupComponent } from './sui.accordion/sui.accordion.group.component';
 import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.component';
+import { ButtonGroupComponent } from './sui.button/sui.button.group.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.c
         AlertComponent,
         BadgeComponent,
         ButtonComponent,
+        ButtonGroupComponent,
         CardComponent,
         FormComponent,
         InputComponent,
@@ -82,6 +84,7 @@ import { AccordionToggleComponent } from './sui.accordion/sui.accordion.toggle.c
         AlertComponent,
         BadgeComponent,
         ButtonComponent,
+        ButtonGroupComponent,
         CardComponent,
         FormComponent,
         InputComponent,

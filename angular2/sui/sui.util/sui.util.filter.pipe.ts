@@ -10,7 +10,6 @@ export class FilterPipe implements PipeTransform {
         if (filter && filter.keyValues && filter.keyValues.length) {
             if (!filter.orCondition) {
                 for (let ft of filter.keyValues) {
-                    debugger;
                     items = items.filter(item => {
                         return contains(item[ft.key], ft.value);
                     });
@@ -31,8 +30,6 @@ export class FilterPipe implements PipeTransform {
 }
 
 export function contains(val: Object, search: Object) {
-    debugger;
-
     if (!search)
         return true;
     if (typeof val === 'string') {

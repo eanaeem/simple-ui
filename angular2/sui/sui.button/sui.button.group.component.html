@@ -1,0 +1,3 @@
+<div class="{{' sui-btn-group '+ cssClass}}" [ngStyle]="style"> 
+    <sui-btn *ngFor="let btn of buttons" [model]="btn" (onClick)="onBtnClick($event)" > </sui-btn>
+</div>

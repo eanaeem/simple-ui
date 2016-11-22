@@ -9,7 +9,7 @@ import {
 
 
 @Component({
-    selector: 'accordion-toggle',
+    selector: 'sui-accordion-toggle',
     template: `<ng-content></ng-content>`
 })
 export class AccordionToggleComponent {

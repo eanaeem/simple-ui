@@ -1,6 +1,20 @@
-import {Component, OnInit, Input, Output, EventEmitter, HostListener, forwardRef, NgModule} from "@angular/core";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    HostListener,
+    forwardRef,
+    NgModule
+} from '@angular/core';
+import {
+    ControlValueAccessor,
+    NG_VALUE_ACCESSOR,
+    NG_VALIDATORS, Validator,
+    AbstractControl
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'sui-rating',
@@ -12,13 +26,13 @@ import {CommonModule} from "@angular/common";
 })
 export class RatingComponent implements OnInit, ControlValueAccessor, Validator {
     @Input()
-    iconClass = "sui-star-icon";
+    iconClass = 'sui-star-icon';
 
     @Input()
-    fullIcon = "★";
+    fullIcon = '★';
 
     @Input()
-    emptyIcon = "☆";
+    emptyIcon = '☆';
 
     @Input()
     readonly: boolean;
@@ -123,7 +137,7 @@ export class RatingComponent implements OnInit, ControlValueAccessor, Validator 
     // Host Bindings
     // -------------------------------------------------------------------------
 
-    @HostListener("keydown", ["$event"])
+    @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent): void {
         if ([37, 38, 39, 40].indexOf(event.which) === -1 || this.hovered)
             return;

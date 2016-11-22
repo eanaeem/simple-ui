@@ -1,5 +1,5 @@
 
-import { ButtonModel } from 'angular2-simple-ui/sui//sui.util/sui.util.button.model';
+import { ButtonModel } from '../sui.util/sui.util.button.model';
 
 export enum EnumFieldType {
     text = 0,

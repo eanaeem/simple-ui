@@ -1,11 +1,31 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { FilterModel, FilterKeyValue } from '../sui.util/sui.util.filter.model';
 import {
-    TableModel, ColumnModel, ISelectModel, SelectModel,
-    EnumFieldType, EnumEditType
+    Component,
+    Input,
+    Output,
+    OnInit,
+    EventEmitter
+} from '@angular/core';
+
+import {
+    FilterModel,
+    FilterKeyValue
+} from '../sui.util/sui.util.filter.model';
+
+import {
+    TableModel,
+    ColumnModel,
+    ISelectModel,
+    SelectModel,
+    EnumFieldType,
+    EnumEditType
 } from './sui.table.model';
+
 import { SuiHttpService } from '../sui.util/sui.util.httpService';
-import { FormBase, DropdownField, TextboxField } from '../sui.util/sui.util.formBase';
+import {
+    FormBase,
+    DropdownField,
+    TextboxField
+} from '../sui.util/sui.util.formBase';
 import { AlertType } from '../sui.alert/sui.alert.component';
 
 @Component({
@@ -21,8 +41,6 @@ export class TableComponent implements OnInit {
     @Output() deleteRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
-
-
     filters: FilterModel = new FilterModel();
     hiddenFields: string[] = [];
     sortKey: string;
@@ -48,9 +66,10 @@ export class TableComponent implements OnInit {
     tableData: any[];
     rowToAdd: any;
     alertType: AlertType = AlertType.error;
-    constructor(private suiHttpService: SuiHttpService) { }
     columns: ColumnModel[] = [];
     hasUnboundColumn: boolean = false;
+
+    constructor(private suiHttpService: SuiHttpService) { }
     ngOnInit(): void {
         this.getColumns().forEach(y => {
             if (y.hidden)

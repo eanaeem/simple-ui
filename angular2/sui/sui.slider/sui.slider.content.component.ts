@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class SliderContentComponent {
     @Input() cssClass: string = '';
     @Input() style: Object = {};
+    isVisible: boolean = false;
 }
