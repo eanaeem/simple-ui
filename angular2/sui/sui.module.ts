@@ -8,6 +8,7 @@ import { OrderByPipe } from './sui.util/sui.util.orderBy.pipe';
 import { VisiblePipe } from './sui.util/sui.util.visible.pipe';
 import { PagingPipe } from './sui.util/sui.util.paging.pipe';
 import { DeletePipe } from './sui.util/sui.util.delete.pipe';
+import { TableMenuFilterPipe } from './sui.util/sui.util.table.menu.filter.pipe';
 
 import { NavigationComponent } from './sui.navigation/sui.navigation.component';
 import { RatingComponent } from './sui.rating/sui.rating.component';
@@ -42,6 +43,7 @@ import { ButtonGroupComponent } from './sui.button/sui.button.group.component';
         FilterPipe,
         OrderByPipe,
         PagingPipe,
+        TableMenuFilterPipe,
         VisiblePipe,
 
         AccordionComponent,
@@ -78,6 +80,7 @@ import { ButtonGroupComponent } from './sui.button/sui.button.group.component';
         FilterPipe,
         OrderByPipe,
         PagingPipe,
+        TableMenuFilterPipe,
         VisiblePipe,
 
         AccordionComponent,

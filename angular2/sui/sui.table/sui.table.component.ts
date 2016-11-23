@@ -12,10 +12,12 @@ import {
 } from '../sui.util/sui.util.filter.model';
 
 import {
+    TableMenuFilterModel
+} from '../sui.util/sui.util.table.menu.filter.pipe';
+
+import {
     TableModel,
     ColumnModel,
-    ISelectModel,
-    SelectModel,
     EnumFieldType,
     EnumEditType
 } from './sui.table.model';
@@ -43,7 +45,7 @@ export class TableComponent implements OnInit {
     @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
     filters: FilterModel = new FilterModel();
     filterMenuSearchFilters: FilterModel = new FilterModel();
-
+    tableMenuFilterModel: TableMenuFilterModel[] = [];
     hiddenFields: string[] = [];
     sortKey: string;
     descOrder: boolean;
@@ -70,7 +72,7 @@ export class TableComponent implements OnInit {
     alertType: AlertType = AlertType.error;
     columns: ColumnModel[] = [];
     hasUnboundColumn: boolean = false;
-
+    filterPanelField: string = '';
     constructor(private suiHttpService: SuiHttpService) { }
     ngOnInit(): void {
         this.getColumns().forEach(y => {
@@ -240,7 +242,7 @@ export class TableComponent implements OnInit {
                 if (y.canFilter) {
                     let filter = new FilterKeyValue();
                     filter.key = y.fieldName;
-                    filter.value = value;
+                    filter.value = [value];
                     keyValues.push(filter);
                 }
             });
@@ -251,11 +253,11 @@ export class TableComponent implements OnInit {
             let filterModel = new FilterModel();
             let prop = this.filters.keyValues.find(y => y.key === key);
             if (prop) {
-                prop.value = value;
+                prop.value = [value];
             } else {
                 prop = new FilterKeyValue();
                 prop.key = key;
-                prop.value = value;
+                prop.value = [value];
                 this.filters.keyValues.push(prop);
             }
             filterModel.keyValues = this.filters.keyValues;
@@ -268,15 +270,23 @@ export class TableComponent implements OnInit {
         let filterModel = new FilterModel();
         if (!isRemove) {
             let prop = new FilterKeyValue();
-            prop.key = key;
-            prop.value = value;
+            let exist = this.filters.keyValues.find(y => y.key == key);
+            debugger;
+            if (exist) {
+                exist.value.push(value)
+                prop.key = key;
+                prop.value = exist.value;
+            } else {
+                prop.key = key;
+                prop.value = [value];
+            }
             this.filters.keyValues.push(prop);
         } else {
             let index = this.filters.keyValues.findIndex(y => y.key == key && y.value == value);
             this.filters.keyValues.splice(index, 1);
         }
         filterModel.keyValues = this.filters.keyValues;
-        filterModel.orCondition = true;
+        filterModel.orCondition = false;
         this.filters = filterModel;
 
     }
@@ -288,43 +298,39 @@ export class TableComponent implements OnInit {
         }
     }
 
-    onFilterMenuSearchChange(event: any) {
-        let value = event.target.value;
-        let filterModel = new FilterModel();
-        let prop = this.filterMenuSearchFilters.keyValues.find(y => y.value === value);
-        if (prop) {
-            prop.value = value;
-        } else {
-            prop = new FilterKeyValue();
-            prop.key = value;
-            prop.value = value;
-            this.filterMenuSearchFilters.keyValues.push(prop);
+    onFilterMenuSearchChange(event: any, column: ColumnModel) {
+        debugger;
+        let val = event.target.value;
+        let exist = this.tableMenuFilterModel.find(y => y.fieldName === column.fieldName);
+        if (exist) {
+            let index = this.tableMenuFilterModel.findIndex(y => y.fieldName === column.fieldName);
+            this.tableMenuFilterModel.splice(index, 1);
         }
-        filterModel.keyValues = this.filterMenuSearchFilters.keyValues;
-        filterModel.orCondition = false;
-        filterModel.isStringArray = true;
-        this.filterMenuSearchFilters = filterModel;
+        if (val) {
+            let tm = new TableMenuFilterModel();
+            tm.fieldName = column.fieldName;
+            tm.search = val;
+            this.tableMenuFilterModel.push(tm);
+        }
     }
-    getSelectList(column: ColumnModel) {
-        let data: ISelectModel[] = [];
-        let opt = new SelectModel();
-        opt.key = '';
-        opt.value = '';
-        data.push(opt);
+    getSelectList(column: ColumnModel, includeEmptyValue: boolean = true) {
+        let data: { key: string, value: string, field: string }[] = [];
+        if (includeEmptyValue) {
+            data.push({ key: '', value: '', field: column.fieldName });
+        }
         if (this.tableData) {
             if (column.autoCreateSelectListFromData) {
                 for (let item of this.tableData) {
                     let value = item[column.fieldName];
                     let exist = data.find(y => y.value === value);
                     if (exist === undefined) {
-                        let select = new SelectModel();
-                        select.key = value;
-                        select.value = value;
-                        data.push(select);
+                        data.push({ key: value, value: value, field: column.fieldName });
                     }
                 }
             } else {
-                data = column.selectList;
+                column.selectList.forEach(y => {
+                    data.push({ key: y.key, value: y.value, field: column.fieldName });
+                });
             }
         }
         return data;

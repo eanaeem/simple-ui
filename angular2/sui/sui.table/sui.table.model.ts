@@ -31,10 +31,6 @@ export enum EnumEditType {
     FormEdit = 3,
     None = 4
 }
-export interface ISelectModel {
-    key: string;
-    value: string;
-}
 
 export enum Position {
     TopRight,
@@ -43,10 +39,6 @@ export enum Position {
     BottomLeft
 }
 
-export class SelectModel implements ISelectModel {
-    public key: string = '';
-    public value: string = '';
-}
 export class TableModel {
     public enableQuickFilterBy: boolean = true;
     public enablePaging: boolean = true;
@@ -60,7 +52,7 @@ export class TableModel {
     public enableServerSideExport: boolean = false;
     public cssClass: Object = 'sui-table-all';
     public style: Object = {};
-    public headerCssClass: string = 'sui-padding sui-border-right sui-theme  ';
+    public headerCssClass: string = '';
     public rowCssClass: string = 'sui-padding ';
     public rowStyle: Object = {};
     public headerStyle: Object = {};
@@ -78,7 +70,7 @@ export class TableModel {
     public paginingControlPosition: Position = Position.TopRight;
     public pagination: PaginationModel = new PaginationModel();
     public showColumnChooserButton: boolean = true;
-    public cssClassColumnChooser: string = ' sui-btn sui-theme ';
+    public cssClassColumnChooser: string = ' sui-btn sui-theme sui-large ';
     public columnChooserText: string = ' Choose Columns';
     public columnChooserIcon: string = 'fa fa-bars';
     
@@ -105,16 +97,16 @@ export class TableModel {
     constructor(public columns: ColumnModel[] = [], public data: any[] = []) {
         this.editBtn.displayText = 'Edit';
         this.editBtn.icon = 'fa fa-edit';
-        this.editBtn.cssClass = 'sui-btn-info';
+        this.editBtn.cssClass = 'sui-btn-info sui-small';
 
         this.deleteBtn.displayText = 'Delete';
         this.deleteBtn.icon = 'fa fa-times';
-        this.deleteBtn.cssClass = 'sui-btn-danger';
+        this.deleteBtn.cssClass = 'sui-btn-danger sui-small';
 
         this.addBtn.displayText = 'Add new';
         this.addBtn.icon = 'fa fa-plus-circle';
         this.addBtn.showBothIconAndText = true;
-        this.addBtn.cssClass = 'sui-btn';
+        this.addBtn.cssClass = 'sui-btn sui-large ';
 
     }
 }
@@ -126,7 +118,7 @@ export class ColumnModel {
     public canExport: boolean = true;
     public canEdit: boolean = true;
     public identityField: boolean = false;
-    public selectList: SelectModel[] = [];
+    public selectList: {key:string, value:string}[] = [];
     public cssfilterRow: string = 'sui-input ';
     public styleFilterRow: Object = {};
     public autoCreateSelectListFromData: boolean = true;

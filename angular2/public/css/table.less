@@ -13,11 +13,22 @@
   overflow: auto;
   background-color:@table-background-color;	
   max-height: 600px;
+  min-height: 400px;  
 }
 .sui-filter-panel {
-	overflow: auto;
-	background-color:@table-striped;	
-  	max-height: 300px;
+overflow: auto;
+border-top: 3px solid #00AEEF;
+margin-top: 30px;
+margin-left: -15px;
+background-color: #F7F7F7;
+max-height: 300px;
+color: #000000;
+min-width: 160px;
+padding: 0;
+position: absolute;
+display: block;
+z-index: 1000;
+width: 100%;
 }
 .sui-pagination-container {
 	margin: 0;
@@ -87,6 +98,7 @@
 	display: table-cell;
 	text-align: center;
 	vertical-align: top;
+	position: relative;
 	white-space: nowrap;
 }
 .sui-table td, .sui-table-all td  {

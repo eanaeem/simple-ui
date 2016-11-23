@@ -23,7 +23,7 @@
             </a>
         </li>
         <li *ngIf="paginationModel.showPageNumbers">
-            <a class="{{ paginationModel.activePageCssClass}}"> {{currentPage}} </a>
+               <a> {{currentPage}} </a>
         </li>
         <li *ngIf="paginationModel.showGoToNextArrow">
             <a (click)="onPageClick(currentPage+1)" title="{{paginationModel.toolTipGoToNext}}">

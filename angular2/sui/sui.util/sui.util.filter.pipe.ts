@@ -1,7 +1,7 @@
 
 import { PipeTransform, Pipe } from '@angular/core';
 import { FilterModel } from './sui.util.filter.model';
-
+import { contains } from './sui.util.contains';
 @Pipe({
     name: 'filter'
 })
@@ -11,22 +11,34 @@ export class FilterPipe implements PipeTransform {
             if (!filter.orCondition) {
                 for (let ft of filter.keyValues) {
                     items = items.filter(item => {
-                        if (!filter.isStringArray)
-                            return contains(item[ft.key], ft.value);
-                        return contains(item, ft.value);
+                        let key = '';
+                        if (!filter.isStringArray) {
+                            key = item[ft.key];
+                        } else {
+                            key = item;
+                        }
+                        let response = false;
+                        ft.value.forEach(y => {
+                            let con = contains(key, y);
+                            if (con) {
+                                response = true;
+                            }
+                        })
+                        return response;
                     });
                 }
             } else {
                 let res: any[] = [];
                 for (let item of items) {
                     for (let ft of filter.keyValues) {
+                        let key = '';
                         if (!filter.isStringArray) {
-                            if (contains(item[ft.key], ft.value))
-                                res.push(item);
+                            key = item[ft.key];
                         } else {
-                            if (contains(item, ft.value))
-                                res.push(item);
+                            key = item;
                         }
+                        if (contains(key, ft.value[0]))
+                            res.push(item);
                     }
                 }
                 return res;
@@ -36,17 +48,4 @@ export class FilterPipe implements PipeTransform {
     }
 }
 
-export function contains(val: Object, search: Object) {
-    if (!search)
-        return true;
-    if (typeof val === 'string') {
-        if (val.toLowerCase().includes(search.toString().toLowerCase())) {
-            return true;
-        }
-    } else if (typeof val === 'number') {
-        return Number(val) === Number(search);
-    } else if (typeof val === 'boolean') {
-        return val.toString() === search.toString();
-    }
-}
 

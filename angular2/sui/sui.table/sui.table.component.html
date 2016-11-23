@@ -1,7 +1,7 @@
 <div class="sui-margin-top">
     <sui-alert [message]="errorMessage" [type]="alertType" heading="Error !"> </sui-alert>
     <div class="sui-table-container" *ngIf="tableModel && showTable">
-        <h2 [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
+        <h2 *ngIf="tableModel.tableHeader" [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
         <div class="sui-margin-bottom">
             <div class="sui-left">
                 <div class="sui-margin">
@@ -41,7 +41,7 @@
         <table [ngClass]="tableModel.cssClass" [ngStyle]="tableModel.style">
             <thead>
                 <tr>
-                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{tableModel.headerCssClass}}"
+                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{ ' sui-padding sui-border-right '+  tableModel.headerCssClass}}"
                         [ngStyle]="tableModel.headerStyle">
                         <a (click)="onSortClick(column)" class="sui-pointer sui-left">
                             <span class="{{tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
@@ -49,21 +49,26 @@
                                     <i class="{{tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
                             </span>
                             <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleCssHeaderText"> {{column.displayName}} </span>
-
+                           
                         </a>
-                        <a class="sui-dropdown-hover"> <i class="fa fa-sort-desc"> </i>
-                            <div class="sui-dropdown-content sui-border sui-filter-panel">
-                                <input class="{{column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" (keyup)="onFilterMenuSearchChange($event)" placeholder="Search ..." *ngIf="column.fieldType!=5 && column.fieldType!=4"
-                                    [type]="getType(column.fieldType)">
-                                <div *ngFor="let item of getSelectList(column) ;let ri=index;trackBy:trackByIndex">
-                                    <div *ngIf="item && item.value && item.value !=''" class="sui-left sui-left-align sui-margin-left-5">
-                                            <input type="checkbox" (change)="onFilterMenuCheckClick($event,column.fieldName,item.value)" > {{item.value}} <br>
+                         <div *ngIf="column.fieldName==filterPanelField" class="sui-filter-panel">
+                                <div class="sui-margin">
+                                    <input (keyup)="onFilterMenuSearchChange($event,column)" placeholder="Search ..." class="sui-input-inline sui-width-100  sui-border sui-margin-0" *ngIf="column.fieldType!=5 && column.fieldType!=4"
+                                        type="search">
+                                    <span class="sui-search-right ">  <i class="fa fa-search"></i> </span>
+                                </div>
+                                <div *ngFor="let item of getSelectList(column,false) | tableMenuFilter:tableMenuFilterModel ;let ri=index;trackBy:trackByIndex"
+                                    class="sui-block">
+                                    <div class="sui-left-align sui-margin">
+                                        <input type="checkbox" (change)="onFilterMenuCheckClick($event,column.fieldName,item.value)">                                        {{item.value}}
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        <span class="sui-right">
+                         <a (click)="filterPanelField==column.fieldName?'':filterPanelField=column.fieldName" class="sui-dropdown-hover"> <i class="fa fa-sort-desc"> </i> </a>
+                        </span>
                     </th>
-                    <th class="{{tableModel.headerCssClass}}" [ngStyle]="tableModel.headerStyle"> </th>
+                    <th class="{{ ' sui-padding sui-border-right '+  tableModel.headerCssClass}}" [ngStyle]="tableModel.headerStyle"> </th>
                 </tr>
                 <tr *ngIf="tableModel.showFilterRow">
                     <th *ngFor="let column of columns | visible:hiddenFields;let kk=index;trackBy:trackByIndex">
@@ -72,7 +77,7 @@
                                 [type]="getType(column.fieldType)" (keyup)="onFilterChange($event,column.fieldName)">
                             <select class="{{ 'sui-select ' +column.cssfilterRow}}" [ngStyle]="column.styleFilterRow" *ngIf="column.fieldType==5 || column.fieldType==4"
                                 (change)="onFilterChange($event,column.fieldName)"> 
-                             <option *ngFor="let item of getSelectList(column);let rr=index;trackBy:trackByIndex" [value]="item.key">{{item.value}}</option>
+                             <option *ngFor="let item of getSelectList(column,true);let rr=index;trackBy:trackByIndex" [value]="item.key">{{item.value}}</option>
                              </select>
                         </div>
                     </th>

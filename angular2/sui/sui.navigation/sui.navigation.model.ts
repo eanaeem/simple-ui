@@ -6,6 +6,8 @@ export class NavigationModel {
     public showBothBrandAndLogo: boolean = false;
     public brandCssClass: string = ' sui-brand ';
     public brandStyle: Object = {};
+    public brandLogoClass: string = ' ';
+    public brandLogoStyle: Object = {};
     constructor(public brand: string) {
         this.links = [];
     }

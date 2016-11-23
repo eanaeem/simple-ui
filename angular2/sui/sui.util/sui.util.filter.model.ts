@@ -1,6 +1,6 @@
 export class FilterKeyValue {
     key: string;
-    value: string;
+    value: string[]=[];
 }
 export class FilterModel {
     keyValues: FilterKeyValue[] = [];

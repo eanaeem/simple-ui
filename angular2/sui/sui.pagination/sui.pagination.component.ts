@@ -25,6 +25,7 @@ export class PaginationComponent implements OnInit {
         this.pageClick.emit(this.currentPage);
     }
     onPageClick(item: number) {
+        debugger;
         if (item === 0) {
             this.currentPage = 1;
         } else if (item > this.totalPageCount) {
@@ -39,7 +40,8 @@ export class PaginationComponent implements OnInit {
     }
     updatePageCount(): void {
         let noOfPages = this.totalRecords / this.pageSize;
-        this.totalPageCount = noOfPages;
+        let rounded = Math.ceil(noOfPages);
+        this.totalPageCount = rounded;
     }
     getDisplayRecordsTex(): string {
 

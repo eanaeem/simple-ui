@@ -1563,6 +1563,7 @@ input[type=radio].sui-radio:disabled + .sui-validate {
   overflow: auto;
   background-color: #ffffff;
   max-height: 600px;
+  min-height: 400px;
 }
 .sui-filter-panel {
   overflow: auto;
