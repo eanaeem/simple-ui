@@ -8,7 +8,7 @@
                     placeholder="{{tableModel.searchInputPlaceholderText}}" type="text" (keyup)="onFilterChange($event,'search')">                <span class="sui-search-right ">  <i class="fa fa-search"></i> </span>
                 <span *ngIf="columns && columns.length"> 
                 <span class="sui-inline-flex"  *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
-                 <input class="sui-input-inline sui-margin-right"  placeholder="{{'Filter By ' + column.displayName}}"
+                <span *ngIf="column.showInQuickFilter" class="sui-margin"> {{column.displayName}} </span>  <input class="sui-input-inline sui-margin-right"  placeholder="{{'Filter By ' + column.displayName}}"
                    *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4" [type]="getType(column.fieldType)" (change)="onFilterChange($event,column)">
                  <select class="sui-select"  *ngIf=" column.showInQuickFilter && (column.fieldType==5 || column.fieldType==4)" (change)="onFilterChange($event,column)"> 
                  <option *ngFor="let item of getSelectList(column);let in=index;trackBy:trackByIndex" [value]="item.key">{{item.value}}</option>

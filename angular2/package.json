@@ -3,12 +3,15 @@
   "version": "1.0.5",
   "description": " Angular 2  Simple Material Design UI Components customisable with Simple 30 KB CSS with LESS support and full features support , just plugin up and run for clarity look at sample examples",
   "scripts": {
-    "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./sui/",
+     "start": "webpack-dev-server --inline --progress --port 4949",
+    "test": "karma start",
+    "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./src/",
     "tslint": "tslint",
     "typedoc": "typedoc",
-    "lint": "npm run tslint \"sui/**/*.ts\"",
+    "lint": "npm run tslint \"src/**/*.ts\"",
     "ci": "npm run lint && npm test && npm run e2e",
-    "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist"
+    "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist",
+    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
   },
   "repository": {
     "type": "git",
