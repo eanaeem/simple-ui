@@ -21,7 +21,7 @@ export class PaginationModel {
     public toolTipGoToStart = 'Go to first page';
     public toolTipGoToEnd = 'Go to last page';
     public txtPageSelection = ' Rows per page  ';
-    public cssPagination = 'sui-pagination';
+    public cssPagination = 'sui-pagination sui-margin-0';
     public stylePagination = {};
     public cssSelectPageSize = 'sui-select sui-padding-0  sui-border-0';
     public styleSelectPageSize = {};

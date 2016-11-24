@@ -43,6 +43,8 @@ export class TableComponent implements OnInit {
     @Output() deleteRecord: EventEmitter<any> = new EventEmitter<any>();
     @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
+    @Output() bindCustomFilterData: EventEmitter<any> = new EventEmitter<any>();
+
     filters: FilterModel = new FilterModel();
     filterMenuSearchFilters: FilterModel = new FilterModel();
     tableMenuFilterModel: TableMenuFilterModel[] = [];
@@ -93,8 +95,8 @@ export class TableComponent implements OnInit {
     }
 
 
-    getData() {
-        if (this.tableData && this.tableData.length)
+    getData(force: boolean = false) {
+        if (!force && this.tableData && this.tableData.length)
             return this.tableData;
 
         if (this.tableModel.data && this.tableModel.data.length) {
@@ -123,6 +125,10 @@ export class TableComponent implements OnInit {
 
     onpageSizeChange(event: number) {
         this.pageSize = event;
+    }
+
+    onRefresh() {
+        this.getData(true);
     }
 
     onEditRow(row: any) {
@@ -233,7 +239,9 @@ export class TableComponent implements OnInit {
         return '';
     }
 
-    onFilterChange(event: any, key: string) {
+    onFilterChange(event: any, key: any) {
+            debugger;
+        
         let value = event.target.value;
         if (key === 'search') {
             let filterModel = new FilterModel();
@@ -251,18 +259,22 @@ export class TableComponent implements OnInit {
             this.filters = filterModel;
         } else {
             let filterModel = new FilterModel();
-            let prop = this.filters.keyValues.find(y => y.key === key);
-            if (prop) {
-                prop.value = [value];
+            if (key.customFilter) {
+                this.bindCustomFilterData.emit({ column: key, value: value });
             } else {
-                prop = new FilterKeyValue();
-                prop.key = key;
-                prop.value = [value];
-                this.filters.keyValues.push(prop);
+                let prop = this.filters.keyValues.find(y => y.key === key.fieldName);
+                if (prop) {
+                    prop.value = [value];
+                } else {
+                    prop = new FilterKeyValue();
+                    prop.key = key;
+                    prop.value = [value];
+                    this.filters.keyValues.push(prop);
+                }
+                filterModel.keyValues = this.filters.keyValues;
+                filterModel.orCondition = false;
+                this.filters = filterModel;
             }
-            filterModel.keyValues = this.filters.keyValues;
-            filterModel.orCondition = false;
-            this.filters = filterModel;
         }
     }
 
@@ -290,6 +302,16 @@ export class TableComponent implements OnInit {
         this.filters = filterModel;
 
     }
+
+    onFilterMenuClick(column: ColumnModel): void {
+        if (column.fieldName === this.filterPanelField) {
+            this.filterPanelField = '';
+        } else {
+            this.filterPanelField = column.fieldName;
+        }
+
+    }
+
     onFilterMenuCheckClick(event: any, field: string, value: any) {
         if (event.target.checked) {
             this.bindFilterToField(field, value);
@@ -299,7 +321,6 @@ export class TableComponent implements OnInit {
     }
 
     onFilterMenuSearchChange(event: any, column: ColumnModel) {
-        debugger;
         let val = event.target.value;
         let exist = this.tableMenuFilterModel.find(y => y.fieldName === column.fieldName);
         if (exist) {
@@ -351,6 +372,8 @@ export class TableComponent implements OnInit {
         if (exist === undefined)
             return true;
     }
+
+
 
     onActionButtonClick(id: string, row: any) {
         this.actionButtonClicked.emit({ id, row });

@@ -18,7 +18,8 @@ export class TableMenuFilterPipe implements PipeTransform {
                                 res.push(y);
                             }
                         } else {
-                            res.push(y);
+                            if (!this.hasFieldName(y, tableMenuFilterModels))
+                                res.push(y);
                         }
                     })
                 }
@@ -26,6 +27,13 @@ export class TableMenuFilterPipe implements PipeTransform {
             return res;
         }
         return items;
+    }
+
+    hasFieldName(item: any, tableMenuFilterModels: TableMenuFilterModel[]): boolean {
+        let exist = tableMenuFilterModels.find(y => y.fieldName == item.field);
+        if (exist)
+            return true;
+        return false;
     }
 }
 

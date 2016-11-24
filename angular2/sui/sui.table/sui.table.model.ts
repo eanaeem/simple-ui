@@ -52,20 +52,21 @@ export class TableModel {
     public enableServerSideExport: boolean = false;
     public cssClass: Object = 'sui-table-all';
     public style: Object = {};
-    public headerCssClass: string = '';
-    public rowCssClass: string = 'sui-padding ';
-    public rowStyle: Object = {};
-    public headerStyle: Object = {};
+    public cssHeaderClass: string = '';
+    public cssRowCssClass: string = 'sui-padding ';
+    public styleRow: Object = {};
+    public styleHeader: Object = {};
     public editType: EnumEditType = EnumEditType.FormEdit;
 
     public cssSortIcon: string = 'sui-margin-right';
     public styleSortIcon: Object = {};
     public cssHeaderText: string = 'sui-margin-right';
-    public styleCssHeaderText: Object = {};
+    public styleHeaderText: Object = {};
     public sortIcon: string = '';
     public sortDescIcon: string = 'fa fa-long-arrow-down';
     public sortAscIcon: string = 'fa fa-long-arrow-up';
-    public searchInputCssClass: string = 'sui-input';
+    public showMenuFilterIcon: string = 'fa fa-sort-desc';
+    public cssSearchInputClass: string = ' sui-border ';
     public searchInputPlaceholderText: string = 'Search ...';
     public paginingControlPosition: Position = Position.TopRight;
     public pagination: PaginationModel = new PaginationModel();
@@ -73,7 +74,7 @@ export class TableModel {
     public cssClassColumnChooser: string = ' sui-btn sui-theme sui-large ';
     public columnChooserText: string = ' Choose Columns';
     public columnChooserIcon: string = 'fa fa-bars';
-    
+
     public tableHeader: string = '';
     public cssTableHeader: string = '';
     public styleTableHeader: Object = {};
@@ -85,6 +86,8 @@ export class TableModel {
     public showColumnFilterMenu: boolean = true;
     public showFilterRow: boolean = false;
     public rowActionButtons: ButtonModel[] = [];
+    public tableCustomActionButtons: ButtonModel[] = [];
+    
     public getUrl?: string;
     public addUrl?: string;
     public updateUrl?: string;
@@ -93,6 +96,8 @@ export class TableModel {
     public editBtn: ButtonModel = new ButtonModel('edit');
     public addBtn: ButtonModel = new ButtonModel('add');
     public deleteBtn: ButtonModel = new ButtonModel('delete');
+    public refreshBtn:ButtonModel  = new ButtonModel('refresh');
+    public canRefresh: boolean = true;
 
     constructor(public columns: ColumnModel[] = [], public data: any[] = []) {
         this.editBtn.displayText = 'Edit';
@@ -108,6 +113,8 @@ export class TableModel {
         this.addBtn.showBothIconAndText = true;
         this.addBtn.cssClass = 'sui-btn sui-large ';
 
+        this.refreshBtn.icon='fa fa-repeat';
+        this.refreshBtn.cssClass='sui-btn sui-light-grey ';
     }
 }
 
@@ -118,7 +125,7 @@ export class ColumnModel {
     public canExport: boolean = true;
     public canEdit: boolean = true;
     public identityField: boolean = false;
-    public selectList: {key:string, value:string}[] = [];
+    public selectList: { key: string, value: string }[] = [];
     public cssfilterRow: string = 'sui-input ';
     public styleFilterRow: Object = {};
     public autoCreateSelectListFromData: boolean = true;
@@ -127,7 +134,8 @@ export class ColumnModel {
     public showOnlyInEditForm: boolean = false;
     public isUnBoundColumn: boolean = false;
     public canEditUnBoundColum: boolean = false;
-
+    public filtedMenuValue: string = '';
+    public customFilter:boolean=false;
 
     constructor(public fieldName: string,
         public displayName: string,
