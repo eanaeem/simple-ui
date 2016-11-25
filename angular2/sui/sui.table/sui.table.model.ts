@@ -70,7 +70,9 @@ export class TableModel {
     public searchInputPlaceholderText: string = 'Search ...';
     public paginingControlPosition: Position = Position.TopRight;
     public pagination: PaginationModel = new PaginationModel();
-   
+    public cssTableContainerClass:string='';
+    public tableContainerstyle:Object={};
+    
     public tableHeader: string = '';
     public cssTableHeader: string = '';
     public styleTableHeader: Object = {};

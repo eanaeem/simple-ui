@@ -1,20 +1,23 @@
 <div class="sui-margin-top">
     <sui-alert [message]="errorMessage" [type]="alertType" heading="Error !"> </sui-alert>
-    <div class="sui-table-container">
+    <div  class="{{' sui-table-container '+ tableModel.cssTableContainerClass}}" [ngStyle]="tableModel.tableContainerstyle">
         <h2 *ngIf="tableModel.tableHeader" [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
         <div class="sui-margin-bottom">
             <div class="sui-left sui-inline-flex">
-                <input class="{{ ' sui-input-inline sui-margin-right  ' + cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy" placeholder="{{tableModel.searchInputPlaceholderText}}"
+                <input class="{{ ' sui-input-inline sui-margin-right  ' + tableModel.cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy" placeholder="{{tableModel.searchInputPlaceholderText}}"
                     type="text" (keyup)="onFilterChange($event,'search')"> <span class="sui-search-right sui-margin-right">  <i class="fa fa-search"></i> </span>
-                <span *ngIf="columns && columns.length"> 
+                <span class="sui-margin-left" *ngIf="columns && columns.length"> 
                 <span class="sui-inline-flex"  *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
-                <span *ngIf="column.showInQuickFilter" class="sui-margin"> {{column.displayName}} </span>                <input class="sui-input-inline sui-margin-right" placeholder="{{'Filter By ' + column.displayName}}" *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4"
+                <span *ngIf="column.showInQuickFilter" class="sui-margin-top-10 sui-margin-right" > {{column.displayName}} </span>                
+                <input class="sui-input-inline sui-margin-right" placeholder="{{'Filter By ' + column.displayName}}" *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4"
                     [type]="getType(column.fieldType)" (change)="onFilterChange($event,column)">
                 <select class="sui-select" *ngIf=" column.showInQuickFilter && (column.fieldType==5 || column.fieldType==4)" (change)="onFilterChange($event,column)"> 
                  <option *ngFor="let item of getSelectList(column);let in=index;trackBy:trackByIndex" [value]="item.key">{{item.value}}</option>
                 </select>
                 </span>
                 </span>
+                <sui-button *ngFor="let btn of tableModel.tableCustomActionButtons" (onClick)="onActionButtonClick(btn.id,null)" [model]="btn">
+                </sui-button>
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canAdd" (onClick)="onEditRow()" [model]="tableModel.addBtn"> </sui-button>
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canRefresh" (onClick)="onRefresh()" [model]="tableModel.refreshBtn"></sui-button>
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canColumnChoose" (onClick)="showColumnsToChoose=!showColumnsToChoose"
@@ -26,8 +29,7 @@
                         </a>
                     </div>
                 </div>
-                <sui-button *ngFor="let btn of tableModel.tableCustomActionButtons" (onClick)="onActionButtonClick(btn.id,null)" [model]="btn">
-                </sui-button>
+             
                 <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==1" [paginationModel]="tableModel.pagination"
                     [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)">
                 </sui-pagination>
@@ -40,19 +42,21 @@
                 </div>
             </div>
         </div>
-        <table [ngClass]="tableModel.cssClass" [ngStyle]="tableModel.style">
+        <table class="{{'sui-margin-top '+ tableModel.cssClass}}" [ngStyle]="tableModel.style">
             <thead>
                 <tr>
-                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{ ' sui-padding sui-border-right '+  tableModel.cssHeaderClass}}"
+                    <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{tableModel.cssHeaderClass}}"
                         [ngStyle]="tableModel.styleHeader">
-                        <a (click)="onSortClick(column)" class="sui-pointer sui-left">
+                        <span (click)="onSortClick(column)" class="sui-pointer sui-left">
                             <span class="{{tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
                                     <i class="{{sortedIcon}}" *ngIf="sortKey == column.fieldName"> </i>
                                     <i class="{{tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
                             </span>
                             <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleHeaderText"> {{column.displayName}} </span>
-
-                        </a>
+                        </span>
+                        <span (click)=" onFilterMenuClick(column)" class=" sui-right sui-pointer sui-dropdown-hover sui-margin-right">
+                              <i class="{{tableModel.showMenuFilterIcon}}"> </i> 
+                        </span>
                         <div *ngIf="filterPanelField && column.fieldName==filterPanelField" class="sui-filter-panel">
                             <div class="sui-margin">
                                 <input (keyup)="onFilterMenuSearchChange($event,column)" [(ngModel)]="column.filtedMenuValue" placeholder="Search ..." class="sui-input-inline sui-width-100  sui-border sui-margin-0"
@@ -62,15 +66,13 @@
                             <div *ngFor="let item of getSelectList(column,false) | tableMenuFilter:tableMenuFilterModel ;let ri=index;trackBy:trackByIndex"
                                 class="sui-block">
                                 <div class="sui-left-align sui-margin">
-                                    <input type="checkbox" (change)="onFilterMenuCheckClick($event,column.fieldName,item.value)">                                    {{item.value}}
+                                    <input type="checkbox" [(ngModel)]="item.isSelected"  (change)="onFilterMenuCheckClick($event,column.fieldName,item)">                                    {{item.value}}
                                 </div>
                             </div>
                         </div>
-                        <span class="sui-right">
-                         <a (click)=" onFilterMenuClick(column)" class="sui-dropdown-hover"> <i class="{{tableModel.showMenuFilterIcon}}"> </i> </a>
-                        </span>
+                     
                     </th>
-                    <th class="{{ ' sui-padding sui-border-right '+  tableModel.cssHeaderClass}}" [ngStyle]="tableModel.styleHeader"> </th>
+                    <th class="{{ 'sui-border-right '+  tableModel.cssHeaderClass}}" [ngStyle]="tableModel.styleHeader"> </th>
                 </tr>
                 <tr *ngIf="tableModel.showFilterRow">
                     <th *ngFor="let column of columns | visible:hiddenFields;let kk=index;trackBy:trackByIndex">
@@ -95,7 +97,7 @@
                         <input class="sui-table-check" disabled type="checkbox" *ngIf="col.fieldType===4" [(ngModel)]="row[col.fieldName]" />
                         <img src="{{row[col.fieldName]}}" *ngIf="col.fieldType===7" />
                     </td>
-                    <td align="center">
+                    <td style="text-align:center">
                         <sui-button *ngIf="tableModel.canEdit" (onClick)="onEditRow(row)" [model]="tableModel.editBtn"> </sui-button>
                         <sui-button *ngIf="tableModel.canDelete" (onClick)="onDeleteRow(row)" [model]="tableModel.deleteBtn"> </sui-button>
                         <sui-button *ngFor="let btn of tableModel.rowActionButtons" (onClick)="onActionButtonClick(btn.id, row)" [model]="btn"> </sui-button>

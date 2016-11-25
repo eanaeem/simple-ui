@@ -314,11 +314,13 @@ export class TableComponent implements OnInit {
 
     }
 
-    onFilterMenuCheckClick(event: any, field: string, value: any) {
+    onFilterMenuCheckClick(event: any, field: string, item: any) {
         if (event.target.checked) {
-            this.bindFilterToField(field, value);
+            item.isSelected = true;
+            this.bindFilterToField(field, item.value);
         } else {
-            this.bindFilterToField(field, value, true);
+            item.isSelected = false;
+            this.bindFilterToField(field, item.value, true);
         }
     }
 
@@ -337,9 +339,9 @@ export class TableComponent implements OnInit {
         }
     }
     getSelectList(column: ColumnModel, includeEmptyValue: boolean = true) {
-        let data: { key: string, value: string, field: string }[] = [];
+        let data: { key: string, value: string, field: string, isSelected: boolean }[] = [];
         if (includeEmptyValue) {
-            data.push({ key: '', value: '', field: column.fieldName });
+            data.push({ key: '', value: '', field: column.fieldName, isSelected: false });
         }
         if (this.tableData) {
             if (column.autoCreateSelectListFromData) {
@@ -347,12 +349,12 @@ export class TableComponent implements OnInit {
                     let value = item[column.fieldName];
                     let exist = data.find(y => y.value === value);
                     if (exist === undefined) {
-                        data.push({ key: value, value: value, field: column.fieldName });
+                        data.push({ key: value, value: value, field: column.fieldName, isSelected: false });
                     }
                 }
             } else {
                 column.selectList.forEach(y => {
-                    data.push({ key: y.key, value: y.value, field: column.fieldName });
+                    data.push({ key: y.key, value: y.value, field: column.fieldName, isSelected: false });
                 });
             }
         }
