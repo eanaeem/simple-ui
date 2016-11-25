@@ -4,28 +4,30 @@
         <h2 *ngIf="tableModel.tableHeader" [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
         <div class="sui-margin-bottom">
             <div class="sui-left sui-inline-flex">
-                <input class="{{ ' sui-input-inline sui-margin-right  ' +cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy && tableData && tableData.length "
-                    placeholder="{{tableModel.searchInputPlaceholderText}}" type="text" (keyup)="onFilterChange($event,'search')">                <span class="sui-search-right ">  <i class="fa fa-search"></i> </span>
+                <input class="{{ ' sui-input-inline sui-margin-right  ' + cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy" placeholder="{{tableModel.searchInputPlaceholderText}}"
+                    type="text" (keyup)="onFilterChange($event,'search')"> <span class="sui-search-right sui-margin-right">  <i class="fa fa-search"></i> </span>
                 <span *ngIf="columns && columns.length"> 
                 <span class="sui-inline-flex"  *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
-                <span *ngIf="column.showInQuickFilter" class="sui-margin"> {{column.displayName}} </span>  <input class="sui-input-inline sui-margin-right"  placeholder="{{'Filter By ' + column.displayName}}"
-                   *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4" [type]="getType(column.fieldType)" (change)="onFilterChange($event,column)">
-                 <select class="sui-select"  *ngIf=" column.showInQuickFilter && (column.fieldType==5 || column.fieldType==4)" (change)="onFilterChange($event,column)"> 
+                <span *ngIf="column.showInQuickFilter" class="sui-margin"> {{column.displayName}} </span>                <input class="sui-input-inline sui-margin-right" placeholder="{{'Filter By ' + column.displayName}}" *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4"
+                    [type]="getType(column.fieldType)" (change)="onFilterChange($event,column)">
+                <select class="sui-select" *ngIf=" column.showInQuickFilter && (column.fieldType==5 || column.fieldType==4)" (change)="onFilterChange($event,column)"> 
                  <option *ngFor="let item of getSelectList(column);let in=index;trackBy:trackByIndex" [value]="item.key">{{item.value}}</option>
                 </select>
                 </span>
                 </span>
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canAdd" (onClick)="onEditRow()" [model]="tableModel.addBtn"> </sui-button>
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canRefresh" (onClick)="onRefresh()" [model]="tableModel.refreshBtn"></sui-button>
-                <span class="sui-margin-right sui-dropdown-hover sui-inline-flex" *ngIf="tableData && tableData.length && tableModel.showColumnChooserButton">
-                        <a class="{{tableModel.cssClassColumnChooser}}"><i class="{{tableModel.columnChooserIcon}}"> </i>{{tableModel.columnChooserText}} </a>
-                        <div class="sui-dropdown-content sui-border">
-                            <a (click)="onColumnChooserClick(column)" class="sui-pointer" *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
-                                <i *ngIf="showColumnIcon(column)" class="fa fa-check"> </i> {{column.displayName}}
-                            </a>
-                        </div>
-                </span>
-                 <sui-button *ngFor="let btn of tableModel.tableCustomActionButtons" (onClick)="onActionButtonClick(btn.id,null)" [model]="btn"> </sui-button>
+                <sui-button class="sui-margin-right" *ngIf="tableModel.canColumnChoose" (onClick)="showColumnsToChoose=!showColumnsToChoose"
+                    [model]="tableModel.columChooserBtn"></sui-button>
+                <div *ngIf="showColumnsToChoose" class="sui-border sui-column-chooser-panel">
+                    <div  class="sui-block" *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
+                        <a (click)="onColumnChooserClick(column)" class="sui-pointer sui-padding sui-margin">
+                            <i *ngIf="showColumnIcon(column)" class="fa fa-check"> </i> {{column.displayName}}
+                        </a>
+                    </div>
+                </div>
+                <sui-button *ngFor="let btn of tableModel.tableCustomActionButtons" (onClick)="onActionButtonClick(btn.id,null)" [model]="btn">
+                </sui-button>
                 <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==1" [paginationModel]="tableModel.pagination"
                     [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)">
                 </sui-pagination>

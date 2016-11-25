@@ -6,6 +6,7 @@ import { ColumnModel } from '../sui.table/sui.table.model';
 })
 export class VisiblePipe implements PipeTransform {
     transform(items: ColumnModel[], hiddenFields: string[]): any {
+        debugger;
         return items.filter(item => {
             return this.isVisible(item, hiddenFields);
         });

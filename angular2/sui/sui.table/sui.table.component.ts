@@ -66,6 +66,8 @@ export class TableComponent implements OnInit {
     isEditRow: boolean = false;
     isAddRow: boolean = false;
     showLoader: boolean = false;
+    showColumnsToChoose: boolean = false;
+
     errorMessage: string = '';
     modalHeaderText: string = '';
     deleteIndex?: number;
@@ -240,8 +242,8 @@ export class TableComponent implements OnInit {
     }
 
     onFilterChange(event: any, key: any) {
-            debugger;
-        
+        debugger;
+
         let value = event.target.value;
         if (key === 'search') {
             let filterModel = new FilterModel();
@@ -358,13 +360,18 @@ export class TableComponent implements OnInit {
     }
 
     onColumnChooserClick(column: ColumnModel) {
-        let exit = !this.showColumnIcon(column);
-        if (exit) {
+        let notHidden = this.showColumnIcon(column);
+        if (notHidden) {
             this.hiddenFields.push(column.fieldName);
         } else {
             let index = this.hiddenFields.findIndex(y => y === column.fieldName);
             this.hiddenFields.splice(index, 1);
         }
+        let f: string[] = [];
+        this.hiddenFields.forEach(y => {
+            f.push(y);
+        })
+        this.hiddenFields = f;
     }
 
     showColumnIcon(column: ColumnModel) {

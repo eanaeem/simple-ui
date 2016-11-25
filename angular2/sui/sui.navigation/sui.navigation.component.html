@@ -1,24 +1,18 @@
 <ul *ngIf="!showSideNav" [ngStyle]="nav.style" class="{{'sui-navbar sui-hide-mobile sui-hide-tablet sui-left-align ' + nav.cssClass}}">
-    <li *ngIf="!nav.showBothBrandAndLogo">
-        <a href="/">
-            <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath && !nav.showBothBrandAndLogo" src="{{nav.brandLogoPath}}">
-            <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
-            <span *ngIf="nav.showBothBrandAndLogo">
-              <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-              <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle"> {{nav.brand}} </span>
-            </span>
-        </a>
-    </li>
+
     <li *ngIf="nav.showBothBrandAndLogo">
-        <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}" class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle">
+        <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}" class={{nav.brandLogoClass}} [ngStyle]="nav.brandLogoStyle">
     </li>
-    <li *ngIf="nav.showBothBrandAndLogo">
-        <a href="/" class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle">
+
+    <li *ngIf="!nav.brandLogoPath|| nav.showBothBrandAndLogo">
+        <a href="/" class={{nav.brandCssClass}} [ngStyle]="nav.brandStyle">
             {{nav.brand}}
         </a>
     </li>
+
     <li *ngFor="let item of nav.links" class="sui-right">
-        <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
+        <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}"
+            [ngStyle]="item.style">
             <i *ngIf="item.icon" class="{{item.icon}}"> </i>
             <span *ngIf="item.showBothIconText">  
                 <i *ngIf="item.icon" class="{{item.icon}}"> </i> {{item.displayName}} 
@@ -27,26 +21,20 @@
         </a>
     </li>
 </ul>
-<div class="sui-hide-desktop-xl sui-hide-desktop">
+<div *ngIf="!showSideNav" class="sui-hide-desktop-xl sui-hide-desktop">
     <ul class="sui-navbar">
-        <li class="sui-opennav sui-right">
-            <a href="javascript:void(0); " (click)="onBarsClicked() ">☰</a>
+        <li class="sui-opennav">
+            <span *ngIf="!rightAllginMobileMenuBars" class="sui-pointer sui-text-white sui-margin-right" (click)="onBarsClicked()">☰</span>
+            <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}" class={{nav.brandLogoClass}} [ngStyle]="nav.brandLogoStyle">
+            <span class="sui-brand">{{nav.brand}} </span>
+            <span *ngIf="rightAllginMobileMenuBars" class="sui-pointer sui-text-white" (click)="onBarsClicked()">☰</span>
         </li>
     </ul>
 </div>
 <ul *ngIf="showSmallMenu" [ngStyle]="nav.style" class="{{'sui-navbar sui-left-align ' + nav.cssClass}} ">
-    <li>
-        <a href="/">
-            <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-            <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
-            <span *ngIf="nav.showBothBrandAndLogo">
-              <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-              <span  class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
-            </span>
-        </a>
-    </li>
     <li *ngFor="let item of nav.links">
-        <a routerLink="{{item.routerLink}}" routerLinkActive="active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
+        <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}"
+            [ngStyle]="item.style">
             <i *ngIf="item.icon" class="{{item.icon}}"> </i>
             <span *ngIf="item.showBothIconText">  
                 <i *ngIf="item.icon" class="{{item.icon}}"> </i> {{item.displayName}} 
@@ -56,25 +44,28 @@
     </li>
 </ul>
 
-<nav class="{{'sui-sidenav  sui-card-2 ' + nav.cssClass}}" *ngIf="showSide">
-    <a (click)="sui_close()" class="sui-closenav sui-large">Close &times;</a>
-    <a routerLink="{{item.routerLink}}" routerLinkActive="active" title="{{item.displayName}}" class="{{item.cssClass}}" [ngStyle]="item.style">
-        <i *ngIf="item.icon" class="{{item.icon}}"> </i>
-        <span *ngIf="item.showBothIconText">  
+<ul class="{{' sui-sidenav '+ nav.cssClass}}" *ngIf="showSideMenu" [ngStyle]="nav.sideNavStyle" >
+    <li> <a (click)="onSideMenuClick()" class="sui-closenav sui-large">Close &times;</a> </li>
+    <li *ngFor="let item of nav.links">
+        <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}"
+            [ngStyle]="item.style">
+            <i *ngIf="item.icon" class="{{item.icon}}"> </i>
+            <span *ngIf="item.showBothIconText">  
                 <i *ngIf="item.icon" class="{{item.icon}}"> </i> {{item.displayName}} 
             </span>
-        <span *ngIf="!item.icon"> {{item.displayName}}  </span>
-    </a>
-</nav>
+            <span *ngIf="!item.icon"> {{item.displayName}}  </span>
+        </a>
+    </li>
+</ul>
 
 
 <header *ngIf="showSideNav" class="{{'sui-navbar sui-left-align ' + nav.cssClass}}" [ngStyle]="nav.style">
-    <span class="sui-opennav sui-xlarge" (click)="sui_open()">&#9776;</span>
-    <a href="/">
-        <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-        <span class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" *ngIf="!nav.brandLogoPath"> {{nav.brand}} </span>
-        <span *ngIf="nav.showBothBrandAndLogo"> </span>
-        <img class={{nav.brandLogoClass}}  [ngStyle]="nav.brandLogoStyle" *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}">
-        <span class={{nav.brandCssClass}}  [ngStyle]="nav.brandStyle" class="sui-margin-left sui-margin-right"> {{nav.brand}} </span>
-    </a>
+    <ul class="sui-navbar">
+        <li class="sui-opennav">
+            <span *ngIf="!rightAllginMobileMenuBars" class="sui-pointer sui-text-white sui-margin-right" (click)="onSideMenuClick()">☰</span>
+            <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}" class={{nav.brandLogoClass}} [ngStyle]="nav.brandLogoStyle">
+            <span class="sui-brand">{{nav.brand}} </span>
+            <span *ngIf="rightAllginMobileMenuBars" class="sui-pointer sui-text-white" (click)="onSideMenuClick()">☰</span>
+        </li>
+    </ul>
 </header>

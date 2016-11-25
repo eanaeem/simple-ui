@@ -70,17 +70,15 @@ export class TableModel {
     public searchInputPlaceholderText: string = 'Search ...';
     public paginingControlPosition: Position = Position.TopRight;
     public pagination: PaginationModel = new PaginationModel();
-    public showColumnChooserButton: boolean = true;
-    public cssClassColumnChooser: string = ' sui-btn sui-theme sui-large ';
-    public columnChooserText: string = ' Choose Columns';
-    public columnChooserIcon: string = 'fa fa-bars';
-
+   
     public tableHeader: string = '';
     public cssTableHeader: string = '';
     public styleTableHeader: Object = {};
     public canEdit: boolean = true;
     public canAdd: boolean = true;
     public canDelete: boolean = true;
+    public canColumnChoose: boolean = true;
+    
     public editRecordHeader: string = 'Edit record';
     public addRecordHeader: string = 'Add new record';
     public showColumnFilterMenu: boolean = true;
@@ -93,6 +91,7 @@ export class TableModel {
     public updateUrl?: string;
     public deleteUrl?: string;
 
+    public columChooserBtn: ButtonModel = new ButtonModel('columnChooser');
     public editBtn: ButtonModel = new ButtonModel('edit');
     public addBtn: ButtonModel = new ButtonModel('add');
     public deleteBtn: ButtonModel = new ButtonModel('delete');
@@ -110,11 +109,16 @@ export class TableModel {
 
         this.addBtn.displayText = 'Add new';
         this.addBtn.icon = 'fa fa-plus-circle';
-        this.addBtn.showBothIconAndText = true;
-        this.addBtn.cssClass = 'sui-btn sui-large ';
+        this.addBtn.cssClass = 'sui-btn';
+        this.addBtn.displayText = 'Add new record';
 
         this.refreshBtn.icon='fa fa-repeat';
         this.refreshBtn.cssClass='sui-btn sui-light-grey ';
+        this.refreshBtn.displayText = 'Reload Data';
+
+        this.columChooserBtn.icon='fa fa-bars';
+        this.columChooserBtn.cssClass='sui-btn sui-light-grey ';
+        this.columChooserBtn.displayText = ' Choose Columns';
     }
 }
 
