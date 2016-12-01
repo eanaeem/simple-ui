@@ -131,7 +131,7 @@ export class ColumnModel {
     public canExport: boolean = true;
     public canEdit: boolean = true;
     public identityField: boolean = false;
-    public selectList: { key: string, value: string }[] = [];
+    public selectList: { key: string, value: string, field: string, isSelected: boolean  }[] = [];
     public cssfilterRow: string = 'sui-input ';
     public styleFilterRow: Object = {};
     public autoCreateSelectListFromData: boolean = true;

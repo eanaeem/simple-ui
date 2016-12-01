@@ -59,14 +59,14 @@
                         </span>
                         <div *ngIf="filterPanelField && column.fieldName==filterPanelField" class="sui-filter-panel">
                             <div class="sui-margin">
-                                <input (keyup)="onFilterMenuSearchChange($event,column)" [(ngModel)]="column.filtedMenuValue" placeholder="Search ..." class="sui-input-inline sui-width-100  sui-border sui-margin-0"
+                                <input (keyup)="onFilterMenuSearchChange($event,column)" [(ngModel)]="column.filtedMenuValue" class="sui-input-inline sui-width-100  sui-border sui-margin-0"
                                     *ngIf="column.fieldType!=5 && column.fieldType!=4" type="search">
                                 <span class="sui-search-right ">  <i class="fa fa-search"></i> </span>
                             </div>
                             <div *ngFor="let item of getSelectList(column,false) | tableMenuFilter:tableMenuFilterModel ;let ri=index;trackBy:trackByIndex"
                                 class="sui-block">
                                 <div class="sui-left-align sui-margin">
-                                    <input type="checkbox" [(ngModel)]="item.isSelected"  (change)="onFilterMenuCheckClick($event,column.fieldName,item)">                                    {{item.value}}
+                                    <input type="checkbox" [(ngModel)]="item.isSelected"  (ngModelChange)="onFilterMenuCheckClick($event,column.fieldName,item)">                                    {{item.value}}
                                 </div>
                             </div>
                         </div>

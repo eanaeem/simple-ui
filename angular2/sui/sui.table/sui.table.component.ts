@@ -315,11 +315,10 @@ export class TableComponent implements OnInit {
     }
 
     onFilterMenuCheckClick(event: any, field: string, item: any) {
-        if (event.target.checked) {
-            item.isSelected = true;
+        debugger;
+        if (event) {
             this.bindFilterToField(field, item.value);
         } else {
-            item.isSelected = false;
             this.bindFilterToField(field, item.value, true);
         }
     }
@@ -339,26 +338,23 @@ export class TableComponent implements OnInit {
         }
     }
     getSelectList(column: ColumnModel, includeEmptyValue: boolean = true) {
-        let data: { key: string, value: string, field: string, isSelected: boolean }[] = [];
-        if (includeEmptyValue) {
-            data.push({ key: '', value: '', field: column.fieldName, isSelected: false });
-        }
-        if (this.tableData) {
-            if (column.autoCreateSelectListFromData) {
-                for (let item of this.tableData) {
-                    let value = item[column.fieldName];
-                    let exist = data.find(y => y.value === value);
-                    if (exist === undefined) {
-                        data.push({ key: value, value: value, field: column.fieldName, isSelected: false });
+        if (column.selectList && column.selectList.length < 1 && column.autoCreateSelectListFromData) {
+            if (includeEmptyValue) {
+                column.selectList.push({ key: '', value: '', field: column.fieldName, isSelected: false });
+            }
+            if (this.tableData) {
+                if (column.autoCreateSelectListFromData) {
+                    for (let item of this.tableData) {
+                        let value = item[column.fieldName];
+                        let exist = column.selectList.find(y => y.value === value);
+                        if (exist === undefined) {
+                            column.selectList.push({ key: value, value: value, field: column.fieldName, isSelected: false });
+                        }
                     }
                 }
-            } else {
-                column.selectList.forEach(y => {
-                    data.push({ key: y.key, value: y.value, field: column.fieldName, isSelected: false });
-                });
             }
         }
-        return data;
+        return column.selectList;
     }
 
     onColumnChooserClick(column: ColumnModel) {
