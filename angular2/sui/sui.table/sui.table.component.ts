@@ -354,7 +354,11 @@ export class TableComponent implements OnInit {
                 }
             }
         }
-        return column.selectList;
+        let data: { key: string, value: string, field: string, isSelected: boolean }[] = [];
+        column.selectList.forEach(y => {
+            data.push(y);
+        });
+        return data;
     }
 
     onColumnChooserClick(column: ColumnModel) {
