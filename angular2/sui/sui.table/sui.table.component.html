@@ -1,14 +1,15 @@
 <div class="sui-margin-top">
     <sui-alert [message]="errorMessage" [type]="alertType" heading="Error !"> </sui-alert>
-    <div  class="{{' sui-table-container '+ tableModel.cssTableContainerClass}}" [ngStyle]="tableModel.tableContainerstyle">
+    <div class="{{' sui-table-container '+ tableModel.cssTableContainerClass}}" [ngStyle]="tableModel.tableContainerstyle">
         <h2 *ngIf="tableModel.tableHeader" [ngClass]="tableModel.cssTableHeader" [ngStyle]="tableModel.styleTableHeader"> {{tableModel.tableHeader}} </h2>
         <div class="sui-margin-bottom">
             <div class="sui-left sui-inline-flex">
-                <input class="{{ ' sui-input-inline sui-margin-right  ' + tableModel.cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy" placeholder="{{tableModel.searchInputPlaceholderText}}"
-                    type="text" (keyup)="onFilterChange($event,'search')"> <span class="sui-search-right sui-margin-right">  <i class="fa fa-search"></i> </span>
+                <span class="sui-margin-left sui-margin-right sui-margin-top-10 "> <span *ngIf="tableData && tableData.length"> {{tableData.length}} </span>                items </span>
+                <input class="{{ ' sui-input-inline sui-margin-right  ' + tableModel.cssSearchInputClass}}" *ngIf="tableModel.enableQuickFilterBy"
+                    placeholder="{{tableModel.searchInputPlaceholderText}}" type="text" (keyup)="onFilterChange($event,'search')">                <span class="sui-search-right sui-margin-right">  <i class="fa fa-search"></i> </span>
                 <span class="sui-margin-left" *ngIf="columns && columns.length"> 
                 <span class="sui-inline-flex"  *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
-                <span *ngIf="column.showInQuickFilter" class="sui-margin-top-10 sui-margin-right" > {{column.displayName}} </span>                
+                <span *ngIf="column.showInQuickFilter" class="sui-margin-top-10 sui-margin-right" > {{column.displayName}} </span>
                 <input class="sui-input-inline sui-margin-right" placeholder="{{'Filter By ' + column.displayName}}" *ngIf="column.showInQuickFilter && column.fieldType!=5 && column.fieldType!=4"
                     [type]="getType(column.fieldType)" (change)="onFilterChange($event,column)">
                 <select class="sui-select" *ngIf=" column.showInQuickFilter && (column.fieldType==5 || column.fieldType==4)" (change)="onFilterChange($event,column)"> 
@@ -23,13 +24,13 @@
                 <sui-button class="sui-margin-right" *ngIf="tableModel.canColumnChoose" (onClick)="showColumnsToChoose=!showColumnsToChoose"
                     [model]="tableModel.columChooserBtn"></sui-button>
                 <div *ngIf="showColumnsToChoose" class="sui-border sui-column-chooser-panel">
-                    <div  class="sui-block" *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
+                    <div class="sui-block" *ngFor="let column of columns;let in=index;trackBy:trackByIndex">
                         <a (click)="onColumnChooserClick(column)" class="sui-pointer sui-padding sui-margin">
                             <i *ngIf="showColumnIcon(column)" class="fa fa-check"> </i> {{column.displayName}}
                         </a>
                     </div>
                 </div>
-             
+
                 <sui-pagination *ngIf="tableData && tableData.length && tableModel.paginingControlPosition==1" [paginationModel]="tableModel.pagination"
                     [totalRecords]="tableData.length" (pageSizeChange)="onpageSizeChange($event)" (pageClick)="onPageClick($event)">
                 </sui-pagination>
@@ -48,15 +49,17 @@
                     <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{tableModel.cssHeaderClass}}"
                         [ngStyle]="tableModel.styleHeader">
                         <span (click)="onSortClick(column)" class="sui-pointer sui-left">
-                            <span class="{{tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
+                        <span class="{{' sui-icon-placeholder ' +tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
                                     <i class="{{sortedIcon}}" *ngIf="sortKey == column.fieldName"> </i>
                                     <i class="{{tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
+                        </span>
+                        <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleHeaderText"> {{column.displayName}}
+                            <span (click)=" onFilterMenuClick(column)" class="sui-pointer sui-margin-left  sui-margin-right">
+                                <i class="{{ column.icon}}"> </i> 
                             </span>
-                            <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleHeaderText"> {{column.displayName}} </span>
                         </span>
-                        <span (click)=" onFilterMenuClick(column)" class=" sui-right sui-pointer sui-dropdown-hover sui-margin-right">
-                              <i class="{{tableModel.showMenuFilterIcon}}"> </i> 
                         </span>
+
                         <div *ngIf="filterPanelField && column.fieldName==filterPanelField" class="sui-filter-panel">
                             <div class="sui-margin">
                                 <input (keyup)="onFilterMenuSearchChange($event,column)" [(ngModel)]="column.filtedMenuValue" class="sui-input-inline sui-width-100  sui-border sui-margin-0"
@@ -66,11 +69,11 @@
                             <div *ngFor="let item of getSelectList(column,false) | tableMenuFilter:tableMenuFilterModel ;let ri=index;trackBy:trackByIndex"
                                 class="sui-block">
                                 <div class="sui-left-align sui-margin">
-                                    <input type="checkbox" [(ngModel)]="item.isSelected"  (ngModelChange)="onFilterMenuCheckClick($event,column.fieldName,item)">                                    {{item.value}}
+                                    <input type="checkbox" [(ngModel)]="item.isSelected" (ngModelChange)="onFilterMenuCheckClick($event,column.fieldName,item,column)">                                    {{item.value}}
                                 </div>
                             </div>
                         </div>
-                     
+
                     </th>
                     <th class="{{ 'sui-border-right '+  tableModel.cssHeaderClass}}" [ngStyle]="tableModel.styleHeader"> </th>
                 </tr>
@@ -90,10 +93,13 @@
 
             </thead>
             <tbody *ngIf="tableData && tableData.length">
-                <tr *ngFor="let row of tableData | filter : filters |orderBy:sortKey:descOrder| pagination :currentPage:pageSize| delete:deleteIndex| add:rowToAdd ; let in=index;trackBy:trackByIndex ">
+                <tr *ngFor="let row of tableData | filter : filters |orderBy:sortKey:sortOrder| pagination :currentPage:pageSize| delete:deleteIndex| add:rowToAdd ; let in=index;trackBy:trackByIndex ">
                     <td *ngFor="let k=index;trackBy:trackByIndex;let col of columns | visible:hiddenFields" [ngClass]="tableModel.cssRowCssClass"
                         [ngStyle]="tableModel.styleRow">
-                        <span *ngIf="col.fieldType!==4 &&col.fieldType!==7">{{row[col.fieldName]}}</span>
+                        <span *ngIf="col.fieldType!==4 &&col.fieldType!==7 &&col.fieldType!==2 &&col.fieldType!==3" class="{{col.fieldType==1? 'sui-left-align sui-left':'sui-right-align sui-right'}}">{{row[col.fieldName]}}</span>
+                        <span *ngIf="col.fieldType===2" class="sui-right-align sui-right">{{row[col.fieldName]| date:col.dateFormat}}</span>
+                        <span *ngIf="col.fieldType===3" class="sui-right-align sui-right">{{row[col.fieldName]| date:col.dateFormat}}</span>
+
                         <input class="sui-table-check" disabled type="checkbox" *ngIf="col.fieldType===4" [(ngModel)]="row[col.fieldName]" />
                         <img src="{{row[col.fieldName]}}" *ngIf="col.fieldType===7" />
                     </td>

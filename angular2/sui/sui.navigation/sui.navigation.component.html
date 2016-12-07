@@ -1,10 +1,10 @@
-<ul *ngIf="!showSideNav" [ngStyle]="nav.style" class="{{'sui-navbar sui-hide-mobile sui-hide-tablet sui-left-align ' + nav.cssClass}}">
+<ul *ngIf="!showSideNav" [ngStyle]="nav.style" class="{{'sui-navbar sui-hide-mobile sui-hide-tablet ' + nav.cssClass}}">
 
-    <li *ngIf="nav.showBothBrandAndLogo">
+    <li *ngIf="nav.showBothBrandAndLogo" class="sui-left">
         <img *ngIf="nav.brandLogoPath" src="{{nav.brandLogoPath}}" class={{nav.brandLogoClass}} [ngStyle]="nav.brandLogoStyle">
     </li>
 
-    <li *ngIf="!nav.brandLogoPath|| nav.showBothBrandAndLogo">
+    <li *ngIf="!nav.brandLogoPath|| nav.showBothBrandAndLogo" class="sui-left">
         <a href="/" class={{nav.brandCssClass}} [ngStyle]="nav.brandStyle">
             {{nav.brand}}
         </a>
@@ -31,7 +31,7 @@
         </li>
     </ul>
 </div>
-<ul *ngIf="showSmallMenu" [ngStyle]="nav.style" class="{{'sui-navbar sui-left-align ' + nav.cssClass}} ">
+<ul *ngIf="showSmallMenu" [ngStyle]="nav.style" class="{{'sui-navbar ' + nav.cssClass}} ">
     <li *ngFor="let item of nav.links">
         <a routerLink="{{item.routerLink}}" routerLinkActive="sui-active" title="{{item.displayName}}" class="{{item.cssClass}}"
             [ngStyle]="item.style">
@@ -59,7 +59,7 @@
 </ul>
 
 
-<header *ngIf="showSideNav" class="{{'sui-navbar sui-left-align ' + nav.cssClass}}" [ngStyle]="nav.style">
+<header *ngIf="showSideNav" class="{{'sui-navbar  ' + nav.cssClass}}" [ngStyle]="nav.style">
     <ul class="sui-navbar">
         <li class="sui-opennav">
             <span *ngIf="!rightAllginMobileMenuBars" class="sui-pointer sui-text-white sui-margin-right" (click)="onSideMenuClick()">☰</span>

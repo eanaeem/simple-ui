@@ -60,11 +60,11 @@ export class TableModel {
 
     public cssSortIcon: string = 'sui-margin-right';
     public styleSortIcon: Object = {};
-    public cssHeaderText: string = 'sui-margin-right';
+    public cssHeaderText: string = '';
     public styleHeaderText: Object = {};
-    public sortIcon: string = '';
-    public sortDescIcon: string = 'fa fa-long-arrow-down';
-    public sortAscIcon: string = 'fa fa-long-arrow-up';
+    public sortIcon: string = 'fa fa-sort hidden';
+    public sortDescIcon: string = 'fa fa-arrow-down';
+    public sortAscIcon: string = 'fa fa-arrow-up';
     public showMenuFilterIcon: string = 'fa fa-sort-desc';
     public cssSearchInputClass: string = ' sui-border ';
     public searchInputPlaceholderText: string = 'Search ...';
@@ -130,6 +130,7 @@ export class ColumnModel {
     public canSort: boolean = true;
     public canExport: boolean = true;
     public canEdit: boolean = true;
+    public dateFormat: string = 'yyyy-MM-dd HH:mm:ss';
     public identityField: boolean = false;
     public selectList: { key: string, value: string, field: string, isSelected: boolean  }[] = [];
     public cssfilterRow: string = 'sui-input ';
@@ -142,8 +143,11 @@ export class ColumnModel {
     public canEditUnBoundColum: boolean = false;
     public filtedMenuValue: string = '';
     public customFilter:boolean=false;
+    public filtered:boolean=false;
+    public icon:string='';
 
     constructor(public fieldName: string,
         public displayName: string,
         public fieldType: EnumFieldType = EnumFieldType.text) { }
+        
 }

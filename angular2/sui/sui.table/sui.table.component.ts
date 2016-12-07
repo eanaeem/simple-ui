@@ -44,13 +44,23 @@ export class TableComponent implements OnInit {
     @Output() actionButtonClicked: EventEmitter<any> = new EventEmitter<any>();
     @Output() bindUnboudData: EventEmitter<any> = new EventEmitter<any>();
     @Output() bindCustomFilterData: EventEmitter<any> = new EventEmitter<any>();
-
+    @Input()
+    set TableData(data: any[]) {
+        this.tableData = data;
+        this.getData(true);
+    }
+    @Input()
+    set dataFetchUrl(url: string) {
+        this.tableModel.getUrl = url;
+        this.getData(true);
+    }
     filters: FilterModel = new FilterModel();
     filterMenuSearchFilters: FilterModel = new FilterModel();
     tableMenuFilterModel: TableMenuFilterModel[] = [];
     hiddenFields: string[] = [];
     sortKey: string;
-    descOrder: boolean;
+    sortOrder: string = '';
+    ascOrder: boolean;
     sortedIcon: string = '';
     currentPage: number;
     pageSize: number;
@@ -67,7 +77,7 @@ export class TableComponent implements OnInit {
     isAddRow: boolean = false;
     showLoader: boolean = false;
     showColumnsToChoose: boolean = false;
-
+    filteredItems: string[] = [];
     errorMessage: string = '';
     modalHeaderText: string = '';
     deleteIndex?: number;
@@ -242,8 +252,6 @@ export class TableComponent implements OnInit {
     }
 
     onFilterChange(event: any, key: any) {
-        debugger;
-
         let value = event.target.value;
         if (key === 'search') {
             let filterModel = new FilterModel();
@@ -314,12 +322,13 @@ export class TableComponent implements OnInit {
 
     }
 
-    onFilterMenuCheckClick(event: any, field: string, item: any) {
-        debugger;
+    onFilterMenuCheckClick(event: any, field: string, item: any, column: ColumnModel) {
         if (event) {
             this.bindFilterToField(field, item.value);
+            column.icon = 'fa fa-filter';
         } else {
             this.bindFilterToField(field, item.value, true);
+            column.icon = this.tableModel.showMenuFilterIcon;
         }
     }
 
@@ -335,7 +344,10 @@ export class TableComponent implements OnInit {
             tm.fieldName = column.fieldName;
             tm.search = val;
             this.tableMenuFilterModel.push(tm);
+
         }
+        column.filtered = val;
+        this.filteredItems = [column.fieldName];
     }
     getSelectList(column: ColumnModel, includeEmptyValue: boolean = true) {
         if (column.selectList && column.selectList.length < 1 && column.autoCreateSelectListFromData) {
@@ -390,11 +402,19 @@ export class TableComponent implements OnInit {
     onSortClick(column: ColumnModel) {
         if (column.canSort) {
             this.sortKey = column.fieldName;
-            this.descOrder = !this.descOrder;
-            if (this.descOrder) {
-                this.sortedIcon = this.tableModel.sortDescIcon;
+            if (this.sortOrder == '') {
+                this.sortOrder = 'asc';
+            } else if (this.sortOrder == 'asc') {
+                this.sortOrder = 'desc';
             } else {
+                this.sortOrder = '';
+            }
+            if (this.sortOrder == 'desc') {
+                this.sortedIcon = this.tableModel.sortDescIcon;
+            } else if (this.sortOrder == 'asc') {
                 this.sortedIcon = this.tableModel.sortAscIcon;
+            } else {
+                this.sortedIcon = this.tableModel.sortIcon;
             }
         }
     }
@@ -415,6 +435,7 @@ export class TableComponent implements OnInit {
                 if (col.isUnBoundColumn) {
                     this.hasUnboundColumn = true;
                 }
+                col.icon = this.tableModel.showMenuFilterIcon;
             })
         }
         return this.columns;
