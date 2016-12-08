@@ -2,7 +2,7 @@ export class PaginationModel {
     public pageSizeArray: number[] = [5, 10, 25, 50, 100, 500, 1000];
     public showPaging: boolean = true;
     public showPageSizeSelection: boolean = true;
-    public pageSize: number = 10;
+    public pageSize: number = 50;
     public quickAccessMaxPages: number = 5;
     public showGoToEndArrow: boolean = false;
     public showGoToStartArrow: boolean = false;

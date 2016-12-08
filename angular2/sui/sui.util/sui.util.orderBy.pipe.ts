@@ -4,12 +4,12 @@ import { PipeTransform, Pipe } from '@angular/core';
     name: 'orderBy'
 })
 export  class OrderByPipe implements PipeTransform {
-    transform(items: any, key: string, descOrder: boolean): any {
-        return sortArray(items, key, descOrder);
+    transform(items: any, key: string, sortOrder: string): any {
+        return sortArray(items, key, sortOrder);
     }
 }
 
-export function sortArray<T>(items: Array<T>, key: string, descOrder: boolean): Array<T> {
+export function sortArray<T>(items: Array<T>, key: string, sortOrder: string): Array<T> {
     if (!items || items.length < 2) return items;
     let len = items.length, array: T[];
     if (len > 65536) {
@@ -31,9 +31,11 @@ export function sortArray<T>(items: Array<T>, key: string, descOrder: boolean): 
         if (typeof y === 'string') {
             y = y.toLowerCase();
         }
-        if (descOrder)
+        if (sortOrder=='desc')
         return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        if (sortOrder=='asc')
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        return 0;
     });
 
 

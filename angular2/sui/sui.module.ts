@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FilterPipe } from './sui.util/sui.util.filter.pipe';
+
 import { OrderByPipe } from './sui.util/sui.util.orderBy.pipe';
 import { VisiblePipe } from './sui.util/sui.util.visible.pipe';
 import { PagingPipe } from './sui.util/sui.util.paging.pipe';
