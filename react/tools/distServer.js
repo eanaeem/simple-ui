@@ -7,7 +7,7 @@ import compression from 'compression';
 
 // Run Browsersync
 browserSync({
-  port: 3000,
+  port: 5001,
   ui: {
     port: 3001
   },

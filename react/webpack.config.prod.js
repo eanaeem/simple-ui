@@ -71,9 +71,9 @@ export default {
       {test: /\.(jpe?g|png|gif)$/i, loaders: ['file']},
       {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
       {
-        test: /(\.css|\.scss)$/,
+        test: /(\.css|\.less)$/,
         include: path.join(__dirname, 'src'),
-        loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap')
       }
     ]
   }
