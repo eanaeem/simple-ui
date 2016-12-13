@@ -49,17 +49,18 @@
                     <th *ngFor="let column of columns | visible:hiddenFields;let in=index;trackBy:trackByIndex" class="{{tableModel.cssHeaderClass}}"
                         [ngStyle]="tableModel.styleHeader">
                         <span (click)="onSortClick(column)" class="sui-pointer sui-left">
-                        <span class="{{' sui-icon-placeholder ' +tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
-                                    <i class="{{sortedIcon}}" *ngIf="sortKey == column.fieldName"> </i>
-                                    <i class="{{tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
-                        </span>
-                        <span class="{{tableModel.cssHeaderText}}" [ngStyle]="tableModel.styleHeaderText"> {{column.displayName}}
-                            <span (click)=" onFilterMenuClick(column)" class="sui-pointer sui-margin-left  sui-margin-right">
-                                <i class="{{ column.icon}}"> </i> 
+                            <span class="{{tableModel.cssSortIcon}}" *ngIf="column.canSort" [ngStyle]="tableModel.styleSortIcon"> 
+                                        <i class="{{'sui-icon-width '+sortedIcon}}" *ngIf="sortKey == column.fieldName"> </i>
+                                        <i class="{{'sui-icon-width '+tableModel.sortIcon}}" *ngIf="sortKey != column.fieldName"> </i>
                             </span>
-                        </span>
-                        </span>
 
+                        </span>
+                        <span class="{{'sui-pointer sui-margin-left-5' +tableModel.cssHeaderText}}" (click)="onSortClick(column)" [ngStyle]="tableModel.styleHeaderText">
+                                {{column.displayName}}
+                        </span>
+                        <span (click)=" onFilterMenuClick(column)" class=" sui-pointer sui-margin-left  sui-margin-right sui-icon-width">
+                                <i class="{{'sui-icon-width '+ column.icon}}"> </i> 
+                        </span>
                         <div *ngIf="filterPanelField && column.fieldName==filterPanelField" class="sui-filter-panel">
                             <div class="sui-margin">
                                 <input (keyup)="onFilterMenuSearchChange($event,column)" [(ngModel)]="column.filtedMenuValue" class="sui-input-inline sui-width-100  sui-border sui-margin-0"
