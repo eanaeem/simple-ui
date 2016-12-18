@@ -1,5 +1,3 @@
-
-
 input[type=checkbox].sui-check {
 	height: @check-size;
 	position: relative;
@@ -114,4 +112,74 @@ input[type=radio].sui-radio {
 .sui-search-right {
 	margin-left: -30px;
 	padding-top: 10px;
+}
+
+
+.sui-input-float {
+  width: 100%;
+  display: block;
+  border: none ;
+  padding: 10px;
+  border-bottom: solid 1px @border;
+  	&:focus {
+	 outline: none;
+	border-bottom: solid 2px  @theme;
+	transition-property: border-color;
+	transition-duration: 0.5s;
+	-webkit-transition-property: border-color;
+	-webkit-transition-duration: 0.5s;
+	-o-transition-property: border-color;
+	-o-transition-duration: 0.5s;
+	-moz-transition-property: border-color;
+	-moz-transition-duration: 0.5s;
+	  }
+	  &:focus  ~ label  {
+ 		-webkit-transition: all 0.3s ease-in-out;
+ 		transition: all 0.3s ease-in-out;
+ 		-webkit-transform: translateY(-30px);
+ 		 transform: translateY(-30px);
+ 		 opacity: 1;
+	  }
+	  
+}
+
+
+.sui-label-float {
+	.sui-label;
+	opacity: 0.6;
+	float: left;
+	margin-top: -30px;
+}
+
+
+.sui-select-float {
+  border: 1px solid transparent;
+	color: @fg-color;
+
+	option[disabled] {
+		color: @selected-color;
+	}
+	border-bottom: 1px solid @border;
+ 	 width: 100%;
+	 margin-top: 30px;
+  	&:focus {
+	 outline: none;
+	border-bottom: solid 2px  @theme;
+	transition-property: border-color;
+	transition-duration: 0.5s;
+	-webkit-transition-property: border-color;
+	-webkit-transition-duration: 0.5s;
+	-o-transition-property: border-color;
+	-o-transition-duration: 0.5s;
+	-moz-transition-property: border-color;
+	-moz-transition-duration: 0.5s;
+	  }
+	  &:focus  ~ label {
+ 		-webkit-transition: all 0.3s ease-in-out;
+ 		transition: all 0.3s ease-in-out;
+ 		-webkit-transform: translateY(-30px);
+ 		 transform: translateY(-30px);
+ 		 opacity: 1;
+	  }
+	 
 }
