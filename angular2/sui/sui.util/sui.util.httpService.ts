@@ -34,8 +34,8 @@ export class SuiHttpService {
         header: Object = { 'Content-Type': 'application/json' }): Observable<any> {
         let bodyString = JSON.stringify(body);
         let headers = new Headers(header);
-        let options = new RequestOptions({  withCredentials: withCredentials });
-        return this.http.post(url,  options)
+        let options = new RequestOptions({ withCredentials: withCredentials });
+        return this.http.post(url, options)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -84,8 +84,10 @@ export class SuiHttpService {
 
     private handleError(error: Response | any) {
         let errMsg: string;
-        debugger;
-        if (error instanceof Response) {
+        if (error && error.status == 0) {
+            return Observable.throw('XHTTP request Failed due to CORS or authentication');
+        }
+        else if (error instanceof Response) {
             const body = error.json() || '';
             const err = body.error || JSON.stringify(body);
             errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
